@@ -1,4 +1,28 @@
-import { VisitObject } from "./type";
+import ApiCalendar from "react-google-calendar-api";
+import { ConfigApiCalendar, VisitObject } from "./type";
+
+// config for google calendar
+const calendarConfig: ConfigApiCalendar = {
+  clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+  apiKey: import.meta.env.VITE_GOOGLE_APP_ID,
+  scope: "https://www.googleapis.com/auth/calendar",
+  discoveryDocs: [
+    "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
+  ],
+};
+
+export const apiCalendar = new ApiCalendar(calendarConfig);
+
+// config for firebase
+export const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
+};
 
 // visit helpers
 export const isToday = (visit: VisitObject): boolean => {
