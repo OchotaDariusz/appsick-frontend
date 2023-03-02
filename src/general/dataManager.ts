@@ -6,6 +6,7 @@ import {
   DoctorObject,
   DoctorSpeciality,
   ErrorResponse,
+  LoginRequest,
   MedicalDataDTO,
   MedicalDataObject,
   Patient,
@@ -18,7 +19,7 @@ import {
 
 // fetch data helper-functions
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: import.meta.env.REACT_APP_BACKEND_HOST,
+  baseURL: import.meta.env.VITE_BACKEND_HOST,
   timeout: 300000, // 5 minutes
   headers: {
     Accept: "application/json",
@@ -29,12 +30,42 @@ const axiosInstance: AxiosInstance = axios.create({
 });
 
 // POST's
-const postData = async (endpoint: string, body: any): Promise<any> => {
+const postData = async (endpoint: string, body?: any): Promise<any> => {
   try {
     return await axiosInstance.post(endpoint, body);
   } catch {
     return {
       errorMessage: "Cannot post data.",
+    };
+  }
+};
+
+export const postLoginData = async (body: LoginRequest) => {
+  try {
+    return await postData("/auth/login", body);
+  } catch {
+    return {
+      errorMessage: "Cannot login into that account.",
+    };
+  }
+};
+
+export const postRegisterData = async (body: RegisterRequest) => {
+  try {
+    return await postData("/auth/register", body);
+  } catch {
+    return {
+      errorMessage: "Cannot register new account.",
+    };
+  }
+};
+
+export const postLogout = async () => {
+  try {
+    return await postData("/auth/logout");
+  } catch {
+    return {
+      errorMessage: "Cannot logout.",
     };
   }
 };

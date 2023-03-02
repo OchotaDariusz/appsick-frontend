@@ -24,6 +24,11 @@ export type Provider = "LOCAL" | "GOOGLE";
 
 export type DoctorSpeciality = string;
 
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
 export interface RegisterRequest {
   email: string;
   password: string;
