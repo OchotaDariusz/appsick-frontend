@@ -12,7 +12,6 @@ import {
   Patient,
   PatientObject,
   RegisterRequest,
-  User,
   UserDetails,
   VisitObject,
 } from "./type";
@@ -140,7 +139,7 @@ export const getPatient = async (): Promise<PatientObject | ErrorResponse> => {
   };
   try {
     const user: any = await getUser();
-    if ("userId" in (user as User)) {
+    if ("id" in (user as UserDetails)) {
       return await getData(`/patient/${user.id}?user_id=true`);
     }
     return errorMessage;
@@ -157,9 +156,9 @@ export const getPatientMedicalData = async (): Promise<
       "Cannot fetch medical data for for current authenticated user.",
   };
   try {
-    const user: any = await getUser(); // medical data is fetched by userId not patientId
-    if ("userId" in (user as User)) {
-      return await getData(`/medical_data/user/${user.userId}`);
+    const user: any = await getUser(); // medical data is fetched by user.id from UserDetails not patientId
+    if ("id" in (user as UserDetails)) {
+      return await getData(`/medical_data/user/${user.id}`);
     }
     return errorMessage;
   } catch {
