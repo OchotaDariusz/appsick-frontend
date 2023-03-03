@@ -1,6 +1,12 @@
+@use "./variables" as *;
+
 $theme-colors: (
-  "primary": #333333,
-  "danger": #b3b3b3,
+  "primary": $color-primary,
+  "secondary": $color-secondary,
+  "light": $color-white-smoke,
+  "dark": $color-dark,
 );
 
-@import "~bootstrap/scss/bootstrap";
+$btn-border-radius: 50vh;
+
+@import "node_modules/bootstrap/scss/bootstrap";
