@@ -8,12 +8,9 @@ import "./App.scss";
 function App() {
   return (
     <>
-      {ReactDOM.createPortal(
-        <Navbar />,
-        document.getElementById("navbar") as HTMLElement
-      )}
+      {ReactDOM.createPortal(<Navbar />, document.getElementById("navbar") as HTMLElement)}
       <div className="App">
-        <Card className="border-0 shadow-lg">
+        <Card className="border-0 shadow-lg rounded-4">
           <Outlet />
         </Card>
       </div>

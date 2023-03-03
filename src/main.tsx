@@ -12,7 +12,7 @@ import PatientVisitsHistoryPage from "./pages/PatientVisitsHistoryPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import AboutUsPage from "./pages/AboutUsPage";
 import ContactPage from "./pages/ContactPage";
-import "../node_modules/bootstrap/dist/js/bootstrap.bundle.js";
+import "bootstrap/dist/js/bootstrap.bundle";
 import "./index.scss";
 
 const router = createBrowserRouter([

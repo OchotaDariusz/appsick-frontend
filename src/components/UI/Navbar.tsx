@@ -1,9 +1,8 @@
 import React from "react";
-import { Link, redirect } from "react-router-dom";
 import logo from "../../assets/logo.svg";
 import Button from "./Button";
 
-const Navbar = () => {
+function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary shadow-sm rounded-5">
       <div className="container-fluid">
@@ -19,15 +18,12 @@ const Navbar = () => {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span className="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon" />
         </button>
-        <div
-          className="collapse navbar-collapse justify-content-lg-center"
-          id="navbarNav"
-        >
+        <div className="collapse navbar-collapse justify-content-lg-center" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="#">
+              <a className="nav-link" aria-current="page" href="/visit">
                 Visits
               </a>
             </li>
@@ -37,26 +33,29 @@ const Navbar = () => {
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <a className="nav-link" href="/about">
+                About Us
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="/contact">
                 Contact
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link d-block d-lg-none" href="#">
+              <a className="nav-link d-block d-lg-none" href="/">
                 Login | Register
               </a>
             </li>
           </ul>
         </div>
         <span className="navbar-text justify-content-lg-end align-items-lg-baseline d-none d-lg-flex w-25 h-25">
-          <Button onClick={() => redirect("/visit/new")}>
-            Register New Visit
-          </Button>
+          <Button>Register New Visit</Button>
           Login | Register
         </span>
       </div>
     </nav>
   );
-};
+}
 
 export default Navbar;

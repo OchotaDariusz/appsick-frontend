@@ -6,7 +6,7 @@ interface ErrorStatus {
   message?: string;
 }
 
-const ErrorPage: React.FC = () => {
+function ErrorPage(): JSX.Element {
   const error: ErrorStatus | unknown = useRouteError();
   console.error(error);
 
@@ -15,12 +15,10 @@ const ErrorPage: React.FC = () => {
       <h1>Oops!</h1>
       <p>Sorry, an unexpected error has occurred.</p>
       <p>
-        <i>
-          {(error as ErrorStatus).statusText || (error as ErrorStatus).message}
-        </i>
+        <i>{(error as ErrorStatus).statusText || (error as ErrorStatus).message}</i>
       </p>
     </div>
   );
-};
+}
 
 export default ErrorPage;

@@ -1,7 +1,7 @@
 import React from "react";
 
-const PatientVisitsHistoryPage = () => {
+function PatientVisitsHistoryPage() {
   return <div>Patient Visits History Page</div>;
-};
+}
 
 export default PatientVisitsHistoryPage;

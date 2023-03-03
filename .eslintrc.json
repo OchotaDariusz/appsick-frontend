@@ -4,7 +4,9 @@
     "node": true
   },
   "extends": [
-    "eslint:recommended",
+    "airbnb",
+    "airbnb-typescript",
+    "airbnb/hooks",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended"
@@ -15,7 +17,8 @@
       "jsx": true
     },
     "ecmaVersion": "latest",
-    "sourceType": "module"
+    "sourceType": "module",
+    "project": "./tsconfig.json"
   },
   "plugins": ["react", "@typescript-eslint"],
   "settings": {
@@ -28,6 +31,7 @@
     "quotes": ["error", "double"],
     "semi": ["error", "always"],
     "@typescript-eslint/no-explicit-any": ["error", { "ignoreRestArgs": true }],
+    "no-console": "off",
     "prettier/prettier": [
       "error",
       {

@@ -25,9 +25,13 @@ type ChatMessageSetterFn = (prevValue: ChatMessageObject[] | DocumentData) => Ch
 
 class Chatroom {
   private readonly visitId: number;
+
   private readonly userId: number;
+
   private readonly author: string;
+
   private readonly chatMessages: CollectionReference<DocumentData>;
+
   private unsub: (() => void) | undefined;
 
   constructor(visitId: number, userId: number, author: string) {
@@ -45,7 +49,7 @@ class Chatroom {
       visitId: this.visitId,
       date: new Date(),
     };
-    return await addDoc(this.chatMessages, chatMessage);
+    return addDoc(this.chatMessages, chatMessage);
   }
 
   async getChats(
@@ -62,8 +66,8 @@ class Chatroom {
       });
     });
     const querySnapshot = await getDocs(queryResults);
-    querySnapshot.forEach((doc) => {
-      callback(doc.data());
+    querySnapshot.forEach((docSnapshot) => {
+      callback(docSnapshot.data());
     });
   }
 
@@ -77,8 +81,8 @@ class Chatroom {
     const querySnapshot = await getDocs(queryResults);
     const chatHistory: ChatMessageObject[] = [];
     let chatMessage: ChatMessageObject | DocumentData;
-    querySnapshot.forEach((doc) => {
-      chatMessage = doc.data();
+    querySnapshot.forEach((docSnapshot) => {
+      chatMessage = docSnapshot.data();
       chatMessage.date = new Date(chatMessage.date.toDate());
       chatHistory.push(chatMessage as ChatMessageObject);
     });
@@ -93,9 +97,9 @@ class Chatroom {
             });
             setChatMessages([]);
           })
-          .catch((err) => console.log(err.message));
+          .catch((err) => console.error(err.message));
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => console.error(err.message));
   }
 }
 
