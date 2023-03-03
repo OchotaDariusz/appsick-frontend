@@ -1,5 +1,5 @@
 // fetch API error response
-export interface ErrorResponse {
+export interface ErrorMessage {
   errorMessage: string;
 }
 

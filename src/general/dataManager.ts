@@ -5,7 +5,7 @@ import {
   Clinic,
   DoctorObject,
   DoctorSpeciality,
-  ErrorResponse,
+  ErrorMessage,
   LoginRequest,
   MedicalDataDTO,
   MedicalDataObject,
@@ -29,7 +29,7 @@ const axiosInstance: AxiosInstance = axios.create({
 });
 
 // POST's
-const postData = async (endpoint: string, body?: any): Promise<any> => {
+const postData = async (endpoint: string, body?: unknown): Promise<unknown> => {
   try {
     return await axiosInstance.post(endpoint, body);
   } catch {
@@ -110,7 +110,7 @@ export const postPatientMedicalData = async (body: MedicalDataDTO) => {
 };
 
 // GET's
-const getData = async (endpoint: string): Promise<any> => {
+const getData = async (endpoint: string): Promise<unknown> => {
   try {
     return await axiosInstance.get(endpoint);
   } catch {
@@ -120,11 +120,9 @@ const getData = async (endpoint: string): Promise<any> => {
   }
 };
 
-export const getUser = async (): Promise<
-  UserDetails | string | ErrorResponse
-> => {
+export const getUser = async (): Promise<UserDetails | string | ErrorMessage> => {
   try {
-    return await getData("/auth/current");
+    return (await getData("/auth/current")) as Promise<UserDetails | string | ErrorMessage>;
   } catch {
     return {
       errorMessage: "Cannot fetch current authenticated user details.",
@@ -132,15 +130,14 @@ export const getUser = async (): Promise<
   }
 };
 
-export const getPatient = async (): Promise<PatientObject | ErrorResponse> => {
+export const getPatient = async (): Promise<PatientObject | ErrorMessage> => {
   const errorMessage = {
-    errorMessage:
-      "Cannot fetch patient details for current authenticated user.",
+    errorMessage: "Cannot fetch patient details for current authenticated user.",
   };
   try {
-    const user: any = await getUser();
+    const user: string | UserDetails | ErrorMessage = await getUser();
     if ("id" in (user as UserDetails)) {
-      return await getData(`/patient/${user.id}?user_id=true`);
+      return (await getData(`/patient/${(<UserDetails>user).id}?user_id=true`)) as Promise<PatientObject>;
     }
     return errorMessage;
   } catch {
@@ -148,17 +145,14 @@ export const getPatient = async (): Promise<PatientObject | ErrorResponse> => {
   }
 };
 
-export const getPatientMedicalData = async (): Promise<
-  MedicalDataObject | MedicalDataObject[] | ErrorResponse
-> => {
+export const getPatientMedicalData = async (): Promise<MedicalDataObject | MedicalDataObject[] | ErrorMessage> => {
   const errorMessage = {
-    errorMessage:
-      "Cannot fetch medical data for for current authenticated user.",
+    errorMessage: "Cannot fetch medical data for for current authenticated user.",
   };
   try {
-    const user: any = await getUser(); // medical data is fetched by user.id from UserDetails not patientId
+    const user: string | UserDetails | ErrorMessage = await getUser(); // medical data is fetched by user.id from UserDetails not patientId
     if ("id" in (user as UserDetails)) {
-      return await getData(`/medical_data/user/${user.id}`);
+      return (await getData(`/medical_data/user/${(<UserDetails>user).id}`)) as Promise<MedicalDataObject[]>;
     }
     return errorMessage;
   } catch {
@@ -166,20 +160,18 @@ export const getPatientMedicalData = async (): Promise<
   }
 };
 
-export const getPatientVisits = async (
-  time?: string,
-  pageNumber?: number
-): Promise<VisitObject[] | ErrorResponse> => {
+export const getPatientVisits = async (time?: string, pageNumber?: number): Promise<VisitObject[] | ErrorMessage> => {
   const errorMessage = {
-    errorMessage:
-      "Cannot fetch patient details for current authenticated user.",
+    errorMessage: "Cannot fetch patient details for current authenticated user.",
   };
   try {
-    const timeEndpoint = time || "";
-    const currentPage = `?pageNumber=${pageNumber}` || "";
-    const patient: any = await getPatient();
+    const timeEndpoint = time ?? "";
+    const currentPage = `?pageNumber=${pageNumber}` ?? "";
+    const patient: PatientObject | ErrorMessage = await getPatient();
     if ("patientId" in (patient as Patient)) {
-      return await getData(`/visit/patient/${patient.patientId}`);
+      return (await getData(`/visit/patient/${(<Patient>patient).patientId}${timeEndpoint}${currentPage}`)) as Promise<
+        VisitObject[]
+      >;
     }
     return errorMessage;
   } catch {
@@ -187,9 +179,7 @@ export const getPatientVisits = async (
   }
 };
 
-export const getPatientVisitsInFuture = async (): Promise<
-  VisitObject[] | ErrorResponse
-> => {
+export const getPatientVisitsInFuture = async (): Promise<VisitObject[] | ErrorMessage> => {
   try {
     return await getPatientVisits("/future");
   } catch {
@@ -199,9 +189,7 @@ export const getPatientVisitsInFuture = async (): Promise<
   }
 };
 
-export const getPatientVisitsForToday = async (): Promise<
-  VisitObject[] | ErrorResponse
-> => {
+export const getPatientVisitsForToday = async (): Promise<VisitObject[] | ErrorMessage> => {
   try {
     return await getPatientVisits("/current");
   } catch {
@@ -211,9 +199,7 @@ export const getPatientVisitsForToday = async (): Promise<
   }
 };
 
-export const getPatientVisitsFromPast = async (
-  pageNumber?: number
-): Promise<VisitObject[] | ErrorResponse> => {
+export const getPatientVisitsFromPast = async (pageNumber?: number): Promise<VisitObject[] | ErrorMessage> => {
   try {
     return await getPatientVisits("/past", pageNumber);
   } catch {
@@ -225,9 +211,9 @@ export const getPatientVisitsFromPast = async (
 
 export const getChatHistoryFromVisit = async (
   visitId: number | string
-): Promise<ChatMessageObject[] | ErrorResponse> => {
+): Promise<ChatMessageObject[] | ErrorMessage> => {
   try {
-    return await getData(`/chats/visit/${visitId}`);
+    return (await getData(`/chats/visit/${visitId}`)) as Promise<ChatMessageObject[]>;
   } catch {
     return {
       errorMessage: "Cannot fetch chat history from that visit.",
@@ -235,9 +221,9 @@ export const getChatHistoryFromVisit = async (
   }
 };
 
-export const getClinics = async (): Promise<Clinic[] | ErrorResponse> => {
+export const getClinics = async (): Promise<Clinic[] | ErrorMessage> => {
   try {
-    return await getData("/clinic");
+    return (await getData("/clinic")) as Promise<Clinic[]>;
   } catch {
     return {
       errorMessage: "Cannot fetch clinics data.",
@@ -245,11 +231,9 @@ export const getClinics = async (): Promise<Clinic[] | ErrorResponse> => {
   }
 };
 
-export const getClinicById = async (
-  clinicId: number | string
-): Promise<Clinic | ErrorResponse> => {
+export const getClinicById = async (clinicId: number | string): Promise<Clinic | ErrorMessage> => {
   try {
-    return await getData(`/clinic/${clinicId}`);
+    return (await getData(`/clinic/${clinicId}`)) as Promise<Clinic>;
   } catch {
     return {
       errorMessage: "Cannot fetch clinic data.",
@@ -257,11 +241,9 @@ export const getClinicById = async (
   }
 };
 
-export const getDoctorById = async (
-  doctorId: number | string
-): Promise<DoctorObject | ErrorResponse> => {
+export const getDoctorById = async (doctorId: number | string): Promise<DoctorObject | ErrorMessage> => {
   try {
-    return await getData(`/doctor/${doctorId}`);
+    return (await getData(`/doctor/${doctorId}`)) as Promise<DoctorObject>;
   } catch {
     return {
       errorMessage: "Cannot fetch doctor data.",
@@ -269,11 +251,9 @@ export const getDoctorById = async (
   }
 };
 
-export const getDoctorsByClinicId = async (
-  clinicId: number | string
-): Promise<DoctorObject[] | ErrorResponse> => {
+export const getDoctorsByClinicId = async (clinicId: number | string): Promise<DoctorObject[] | ErrorMessage> => {
   try {
-    return await getData(`/clinic/${clinicId}/doctor`);
+    return (await getData(`/clinic/${clinicId}/doctor`)) as Promise<DoctorObject[]>;
   } catch {
     return {
       errorMessage: "Cannot fetch doctors by clinic data.",
@@ -281,11 +261,9 @@ export const getDoctorsByClinicId = async (
   }
 };
 
-export const getDoctorsBySpeciality = async (
-  speciality: DoctorSpeciality
-): Promise<DoctorObject[] | ErrorResponse> => {
+export const getDoctorsBySpeciality = async (speciality: DoctorSpeciality): Promise<DoctorObject[] | ErrorMessage> => {
   try {
-    return await getData(`/specialities/${speciality}`);
+    return (await getData(`/specialities/${speciality}`)) as Promise<DoctorObject[]>;
   } catch {
     return {
       errorMessage: "Cannot fetch doctors by their specialities data.",
@@ -293,11 +271,9 @@ export const getDoctorsBySpeciality = async (
   }
 };
 
-export const getDoctorSpecialities = async (): Promise<
-  DoctorObject[] | ErrorResponse
-> => {
+export const getDoctorSpecialities = async (): Promise<DoctorSpeciality[] | ErrorMessage> => {
   try {
-    return await getData("/specialities");
+    return (await getData("/specialities")) as Promise<DoctorSpeciality[]>;
   } catch {
     return {
       errorMessage: "Cannot fetch doctor specialities data.",

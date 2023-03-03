@@ -13,7 +13,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { ChatMessageObject, UserDetails } from "../../general/types";
+import { ChatMessageObject, UserDetails, ErrorMessage } from "../../general/types";
 import { firebaseConfig } from "../../general/utils";
 import { getUser, postVisitChatMessages } from "../../general/dataManager";
 
@@ -21,23 +21,20 @@ initializeApp(firebaseConfig);
 
 const db = getFirestore();
 
-type ChatMessageSetterFn = (
-  prevValue: ChatMessageObject[] | DocumentData
-) => ChatMessageObject[];
+type ChatMessageSetterFn = (prevValue: ChatMessageObject[] | DocumentData) => ChatMessageObject[];
 
 class Chatroom {
   private readonly visitId: number;
   private readonly userId: number;
   private readonly author: string;
   private readonly chatMessages: CollectionReference<DocumentData>;
-  private unsub: () => void;
+  private unsub: (() => void) | undefined;
 
   constructor(visitId: number, userId: number, author: string) {
     this.visitId = visitId;
     this.userId = userId;
     this.author = author;
     this.chatMessages = collection(db, "appsick-visits");
-    this.unsub = () => {};
   }
 
   async addChat(message: string) {
@@ -55,19 +52,12 @@ class Chatroom {
     callback: (chatMessage: ChatMessageObject | DocumentData) => void,
     setChatMessages: ChatMessageSetterFn
   ) {
-    this.unsub();
-    const queryResults = query(
-      this.chatMessages,
-      where("visitId", "==", this.visitId),
-      orderBy("date")
-    );
+    if (typeof this.unsub === "function") this.unsub();
+    const queryResults = query(this.chatMessages, where("visitId", "==", this.visitId), orderBy("date"));
     this.unsub = onSnapshot(queryResults, (snapshot) => {
       snapshot.docChanges().forEach((change) => {
         if (change.type === "added") {
-          setChatMessages((prevMessages: ChatMessageObject[]) => [
-            ...prevMessages,
-            change.doc.data(),
-          ]);
+          setChatMessages((prevMessages: ChatMessageObject[]) => [...prevMessages, change.doc.data()]);
         }
       });
     });
@@ -78,20 +68,12 @@ class Chatroom {
   }
 
   async endVisit(setChatMessages: ChatMessageSetterFn) {
-    const user: any = await getUser();
-    if (
-      "id" in (user as UserDetails) &&
-      (user as UserDetails).role === "PATIENT"
-    ) {
+    const user: UserDetails | string | ErrorMessage = await getUser();
+    if ("id" in (user as UserDetails) && (user as UserDetails).role === "PATIENT") {
       return;
     }
-
-    this.unsub();
-    const queryResults = query(
-      this.chatMessages,
-      where("visitId", "==", this.visitId),
-      orderBy("date")
-    );
+    if (typeof this.unsub === "function") this.unsub();
+    const queryResults = query(this.chatMessages, where("visitId", "==", this.visitId), orderBy("date"));
     const querySnapshot = await getDocs(queryResults);
     const chatHistory: ChatMessageObject[] = [];
     let chatMessage: ChatMessageObject | DocumentData;
