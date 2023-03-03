@@ -7,7 +7,6 @@ import ErrorPage from "./pages/ErrorPage";
 import AllVisitsPage from "./pages/AllVisitsPage";
 import VisitPage from "./pages/VisitPage";
 import VisitChatHistoryPage from "./pages/VisitChatHistoryPage";
-import RegistrationVisitPage from "./pages/RegistrationVisitPage";
 import PatientVisitsHistoryPage from "./pages/PatientVisitsHistoryPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import AboutUsPage from "./pages/AboutUsPage";
@@ -35,11 +34,6 @@ const router = createBrowserRouter([
         path: "visit/:visitId/history",
         loader,
         element: <VisitChatHistoryPage />,
-      },
-      {
-        path: "visit/new",
-        loader,
-        element: <RegistrationVisitPage />,
       },
       {
         path: "patient/:patientId/visits",

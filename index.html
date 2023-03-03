@@ -16,7 +16,12 @@ We offer management systems for both digital & local consultations between a pat
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="modal"></div>
+    <!-- TODO: remove this div after login and re-create when logged-out -->
+    <div id="auth-modal"></div>
+    <!-- TODO: create this div after login-->
+    <div id="visit-register-modal"></div>
+    <!-- TODO: create this div after login-->
+    <div id="visit-end-modal"></div>
     <div id="navbar"></div>
     <div id="root" class="container-fluid"></div>
     <script type="module" src="/src/main.tsx"></script>

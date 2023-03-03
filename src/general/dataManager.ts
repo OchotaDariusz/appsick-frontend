@@ -112,7 +112,8 @@ export const postPatientMedicalData = async (body: MedicalDataDTO) => {
 // GET's
 const getData = async (endpoint: string): Promise<unknown> => {
   try {
-    return await axiosInstance.get(endpoint);
+    const { data } = await axiosInstance.get(endpoint);
+    return data;
   } catch {
     return {
       errorMessage: "Cannot fetch data.",

@@ -5,7 +5,7 @@ import { ErrorMessage, UserDetails } from "./types";
 // used as a "route/endpoints protector" alike
 const loader = async () => {
   const user: string | UserDetails | ErrorMessage = await getUser();
-  if (!("id" in (user as UserDetails))) {
+  if (typeof user === "string" || !("id" in (user as UserDetails))) {
     return redirect("/");
   }
   return null;

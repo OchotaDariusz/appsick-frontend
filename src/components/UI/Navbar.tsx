@@ -43,15 +43,17 @@ function Navbar() {
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link d-block d-lg-none" href="/">
+              <Button modalTarget="#authModal" className="btn-secondary nav-link d-block d-lg-none">
                 Login | Register
-              </a>
+              </Button>
             </li>
           </ul>
         </div>
         <span className="navbar-text justify-content-lg-end align-items-lg-baseline d-none d-lg-flex w-25 h-25">
-          <Button>Register New Visit</Button>
-          Login | Register
+          <Button modalTarget="#visitRegisterModal">Register New Visit</Button>
+          <Button modalTarget="#authModal" className="btn-secondary">
+            Login | Register
+          </Button>
         </span>
       </div>
     </nav>
