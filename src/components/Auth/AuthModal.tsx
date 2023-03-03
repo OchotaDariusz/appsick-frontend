@@ -56,7 +56,6 @@ function AuthModal() {
             role="tab"
             aria-controls="nav-register"
             aria-selected="false"
-            onClick={onClick}
           >
             Register
           </button>
