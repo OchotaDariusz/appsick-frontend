@@ -13,7 +13,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { ChatMessageObject, UserDetails } from "../../general/type";
+import { ChatMessageObject, UserDetails } from "../../general/types";
 import { firebaseConfig } from "../../general/utils";
 import { getUser, postVisitChatMessages } from "../../general/dataManager";
 

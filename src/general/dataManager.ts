@@ -14,7 +14,7 @@ import {
   RegisterRequest,
   UserDetails,
   VisitObject,
-} from "./type";
+} from "./types";
 
 // fetch data helper-functions
 const axiosInstance: AxiosInstance = axios.create({

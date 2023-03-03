@@ -1,5 +1,5 @@
 import ApiCalendar from "react-google-calendar-api";
-import { ConfigApiCalendar, VisitObject } from "./type";
+import { ConfigApiCalendar, VisitObject } from "./types";
 
 // config for google calendar
 const calendarConfig: ConfigApiCalendar = {
