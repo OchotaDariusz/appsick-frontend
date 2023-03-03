@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import loader from "./general/loader";
 import App from "./App";
 import ErrorPage from "./pages/ErrorPage";
 import AllVisitsPage from "./pages/AllVisitsPage";
@@ -22,26 +23,32 @@ const router = createBrowserRouter([
     children: [
       {
         path: "visit",
+        loader,
         element: <AllVisitsPage />,
       },
       {
         path: "visit/:visitId",
+        loader,
         element: <VisitPage />,
       },
       {
         path: "visit/:visitId/history",
+        loader,
         element: <VisitChatHistoryPage />,
       },
       {
         path: "visit/new",
+        loader,
         element: <RegistrationVisitPage />,
       },
       {
         path: "patient/:patientId/visits",
+        loader,
         element: <PatientVisitsHistoryPage />,
       },
       {
         path: "profile",
+        loader,
         element: <UserProfilePage />,
       },
       {
