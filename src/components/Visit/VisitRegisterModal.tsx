@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from "../UI/Modal";
 
-function VisitRegisterModal(): JSX.Element {
+function VisitRegisterModal() {
   const onClick = () => {
     console.log("onClick");
   };

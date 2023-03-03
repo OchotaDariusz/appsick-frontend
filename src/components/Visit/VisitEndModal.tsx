@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from "../UI/Modal";
 
-function VisitEndModal(): JSX.Element {
+function VisitEndModal() {
   const onClick = () => {
     console.log("onClick");
   };

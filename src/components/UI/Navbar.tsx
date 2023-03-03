@@ -4,7 +4,7 @@ import Button from "./Button";
 
 function Navbar() {
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary shadow-sm rounded-5">
+    <nav role="navigation" className="navbar navbar-expand-lg bg-body-tertiary shadow-sm rounded-5">
       <div className="container-fluid">
         <a className="navbar-brand w-25" href="/">
           <img className="w-50 h-25" src={logo} alt="logo" />

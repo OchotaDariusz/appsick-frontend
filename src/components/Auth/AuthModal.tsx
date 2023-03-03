@@ -21,7 +21,7 @@ const logout = () => {
     .catch((err) => console.error(err));
 };
 
-function AuthModal(): JSX.Element {
+function AuthModal() {
   const onClick = () => {
     console.log("onClick");
   };
