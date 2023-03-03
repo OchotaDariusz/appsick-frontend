@@ -2,12 +2,8 @@ import React from "react";
 import Modal from "../UI/Modal";
 
 function VisitEndModal() {
-  const onClick = () => {
-    console.log("onClick");
-  };
-
   return (
-    <Modal id="visitEndModal" ariaLabel="visitEndModalLabel" onClick={onClick}>
+    <Modal id="visitEndModal" ariaLabel="visitEndModalLabel">
       <p>VISIT END MODAL</p>
     </Modal>
   );

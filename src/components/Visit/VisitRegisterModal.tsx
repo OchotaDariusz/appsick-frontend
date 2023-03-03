@@ -2,12 +2,8 @@ import React from "react";
 import Modal from "../UI/Modal";
 
 function VisitRegisterModal() {
-  const onClick = () => {
-    console.log("onClick");
-  };
-
   return (
-    <Modal id="visitRegisterModal" ariaLabel="visitRegisterModalLabel" onClick={onClick}>
+    <Modal id="visitRegisterModal" ariaLabel="visitRegisterModalLabel">
       <p>VISIT REGISTER MODAL</p>
     </Modal>
   );

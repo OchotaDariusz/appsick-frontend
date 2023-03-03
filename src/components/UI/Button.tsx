@@ -2,6 +2,7 @@ import React, { MouseEventHandler } from "react";
 import "./Button.scss";
 
 type Props = {
+  id?: string | undefined;
   className?: string | null;
   children: React.ReactNode;
   type?: "button" | "submit" | "reset" | undefined;
@@ -10,13 +11,14 @@ type Props = {
   modalTarget?: string;
 };
 
-function Button({ className, children, type, onClick, darkMode, modalTarget }: Props) {
+function Button({ id, className, children, type, onClick, darkMode, modalTarget }: Props) {
   const classes = className ?? "";
   const btnColor = darkMode ? "btn-dark " : "btn-primary ";
 
   return (
     /* eslint-disable react/button-has-type */
     <button
+      id={id}
       className={`btn ${btnColor}${classes}`}
       type={type}
       onClick={onClick}
@@ -30,6 +32,7 @@ function Button({ className, children, type, onClick, darkMode, modalTarget }: P
 }
 
 Button.defaultProps = {
+  id: undefined,
   className: null,
   type: "button",
   onClick: null,
