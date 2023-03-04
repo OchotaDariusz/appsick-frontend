@@ -4,21 +4,21 @@ export interface ErrorMessage {
 }
 
 // required types for application
-export type DateObject = (string | string[] | number) | Date;
+export type DateObject = (string | string[] | number) | Date | null;
 
-export type DoctorObject = Doctor | DoctorDTO;
+export type DoctorObject = Doctor | DoctorDTO | null;
 
-export type PatientObject = Patient | PatientDTO;
+export type PatientObject = Patient | PatientDTO | null;
 
-export type VisitObject = Visit | VisitDTO;
+export type VisitObject = Visit | VisitDTO | null;
 
 export type VisitStatus = "PENDING" | "MISSED" | "MOVED" | "COMPLETED" | "UNKNOWN";
 
 export type VisitType = "LOCAL" | "ONLINE" | "EXAMINATION" | "PRESCRIPTIONS";
 
-export type MedicalDataObject = MedicalData | MedicalDataDTO;
+export type MedicalDataObject = MedicalData | MedicalDataDTO | null;
 
-export type ChatMessageObject = ChatMessage | ChatMessageDTO;
+export type ChatMessageObject = ChatMessage | ChatMessageDTO | null;
 
 export type Sex = "MALE" | "FEMALE";
 
@@ -138,6 +138,7 @@ export interface Visit {
   clinic?: Clinic | null;
   doctorSpeciality: string | null;
   date: DateObject;
+  dateFormated?: boolean;
   online: boolean;
   reason: string | null;
   chatMessageHistory?: ChatMessage[] | ChatMessageDTO[] | null;

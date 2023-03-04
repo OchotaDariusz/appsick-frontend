@@ -25,9 +25,11 @@ function App() {
         : null}
       {isDomReady ? ReactDOM.createPortal(<Navbar />, document.getElementById("navbar") as HTMLElement) : null}
       <div className="container-fluid p-3 p-lg-5 mt-2">
-        <Card className="border-0 shadow-lg rounded-4">
-          <Outlet />
-        </Card>
+        <main>
+          <Card className="border-0 shadow-lg rounded-4">
+            <Outlet />
+          </Card>
+        </main>
       </div>
     </>
   );

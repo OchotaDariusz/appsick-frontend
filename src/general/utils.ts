@@ -1,5 +1,7 @@
 import ApiCalendar from "react-google-calendar-api";
-import { ConfigApiCalendar, VisitObject } from "./types";
+import { ConfigApiCalendar, Visit, VisitObject } from "./types";
+import maleDoctorAv from "../assets/male.svg";
+import femaleDoctorAv from "../assets/female.svg";
 
 // config for google calendar
 const calendarConfig: ConfigApiCalendar = {
@@ -24,23 +26,35 @@ export const firebaseConfig = {
 
 // visit helpers
 export const isToday = (visit: VisitObject): boolean => {
-  const visitDate = visit.date instanceof Date ? visit.date : new Date(visit.date as string);
+  const visitDate =
+    (visit as Visit).date instanceof Date ? (visit as Visit).date : new Date((visit as Visit).date as string);
   const now = new Date();
 
   return (
-    visitDate.getFullYear() === now.getFullYear() &&
-    visitDate.getMonth() === now.getMonth() &&
-    visitDate.getDate() === now.getDate()
+    (visitDate as Date).getFullYear() === now.getFullYear() &&
+    (visitDate as Date).getMonth() === now.getMonth() &&
+    (visitDate as Date).getDate() === now.getDate()
   );
 };
 
 export const formatVisitDate = (visit: VisitObject): VisitObject => {
-  if (!(visit.date instanceof Date) && Array.isArray(visit.date)) {
-    /* eslint-disable no-param-reassign */
-    visit.date = [
-      new Date((visit.date as string[])[0]).toLocaleDateString("pl-PL"),
-      new Date((visit.date as string[])[1]).toLocaleTimeString("pl-PL"),
-    ];
-  }
+  if (visit?.dateFormated || visit === null) return visit;
+  const visitDate = new Intl.DateTimeFormat("pl").format(Date.parse(visit.date as string));
+  const visitTime = new Intl.DateTimeFormat("pl", { timeStyle: "medium" }).format(Date.parse(visit.date as string));
+  /* eslint-disable no-param-reassign */
+  visit.date = [visitDate, visitTime];
+  console.log(visit);
+  visit.dateFormated = true;
+  /* eslint-enable no-param-reassign */
   return visit;
+};
+
+export const extractDoctorDataFromVisit = (visit: Visit) => {
+  const avatar = visit?.doctor?.user?.sex === "MALE" ? maleDoctorAv : femaleDoctorAv;
+  const doctorAvatar = (visit as Visit).doctor?.user?.image ?? avatar;
+  const doctorFirstName = (visit as Visit).doctor?.user?.firstName ?? "firstName";
+  const doctorLastName = (visit as Visit).doctor?.user?.lastName ?? "lastName";
+  const doctorFullName = `${doctorFirstName} ${doctorLastName}`;
+  const doctorMedicalSpeciality = (visit as Visit).doctor?.medicalSpecialities[0] ?? "docSpeciality";
+  return [doctorAvatar, doctorFullName, doctorMedicalSpeciality];
 };
