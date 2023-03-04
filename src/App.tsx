@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { Outlet } from "react-router-dom";
 import useDomReady from "./hooks/useDomReady";
@@ -7,9 +7,14 @@ import AuthModal from "./components/Auth/AuthModal";
 import VisitRegisterModal from "./components/Visit/VisitRegisterModal";
 import VisitEndModal from "./components/Visit/VisitEndModal";
 import Navbar from "./components/UI/Navbar/Navbar";
+import { apiCalendar } from "./general/utils";
 
 function App() {
   const isDomReady = useDomReady();
+
+  useEffect(() => {
+    apiCalendar.handleAuthClick();
+  }, []);
 
   return (
     <>

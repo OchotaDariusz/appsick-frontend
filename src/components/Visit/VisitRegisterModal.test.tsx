@@ -10,6 +10,6 @@ describe("VisitRegisterModal", () => {
     render(<VisitRegisterModal />);
     // ACT
     // EXPECT
-    expect(screen.getByText("VISIT REGISTER MODAL")).toBeVisible();
+    expect(screen.getByText("Reason")).toBeVisible();
   });
 });

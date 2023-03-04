@@ -95,7 +95,7 @@ export interface PatientDTO extends Patient {
 }
 
 export interface MedicalData {
-  medicalDataId: number;
+  medicalDataId: number | null;
   weight: number;
   height: number;
   medicalConditions: string;
@@ -132,7 +132,7 @@ export interface ChatMessageDTO extends ChatMessage {
 }
 
 export interface Visit {
-  visitId: number;
+  visitId: number | null;
   patient?: Patient;
   doctor?: Doctor;
   clinic?: Clinic | null;
@@ -143,7 +143,7 @@ export interface Visit {
   reason: string | null;
   chatMessageHistory?: ChatMessage[] | ChatMessageDTO[] | null;
   status: VisitStatus;
-  visitTypes: VisitType[];
+  visitTypes: VisitType[] | null;
 }
 
 export interface VisitDTO extends Visit {

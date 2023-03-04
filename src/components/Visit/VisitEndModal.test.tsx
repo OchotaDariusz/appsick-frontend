@@ -10,6 +10,6 @@ describe("VisitEndModal", () => {
     render(<VisitEndModal />);
     // ACT
     // EXPECT
-    expect(screen.getByText("VISIT END MODAL")).toBeVisible();
+    expect(screen.getByText("Weight")).toBeVisible();
   });
 });

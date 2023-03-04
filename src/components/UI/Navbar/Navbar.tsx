@@ -51,6 +51,7 @@ function Navbar() {
           </ul>
         </div>
         <span className="navbar-text justify-content-lg-end align-items-lg-baseline d-none d-lg-flex w-25 h-25">
+          <Button modalTarget="#visitEndModal">End Visit</Button>
           <Button modalTarget="#visitRegisterModal">Register New Visit</Button>
           <Button id="login-btn-lg" modalTarget="#authModal" className="btn-secondary">
             Login | Register

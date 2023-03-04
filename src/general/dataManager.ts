@@ -7,7 +7,6 @@ import {
   DoctorSpeciality,
   ErrorMessage,
   LoginRequest,
-  MedicalDataDTO,
   MedicalDataObject,
   Patient,
   PatientObject,
@@ -99,7 +98,7 @@ export const postVisitChatMessages = async (body: ChatMessageDTO[]) => {
   }
 };
 
-export const postPatientMedicalData = async (body: MedicalDataDTO) => {
+export const postPatientMedicalData = async (body: MedicalDataObject) => {
   try {
     return await postData("/medical_data", body);
   } catch {

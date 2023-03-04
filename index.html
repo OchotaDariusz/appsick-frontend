@@ -26,6 +26,36 @@ We offer management systems for both digital & local consultations between a pat
     </div>
     <div id="navbar" class="w-100"></div>
     <div id="root" class="container-fluid"></div>
+
+    <script type="text/javascript">
+      let tokenClient;
+      let gapiInited = false;
+      let gisInited = false;
+
+      /**
+       * Callback after api.js is loaded.
+       */
+      function gapiLoaded() {
+        gapi.load("client", initializeGapiClient);
+      }
+
+      /**
+       * Callback after the API client is loaded. Loads the
+       * discovery doc to initialize the API.
+       */
+      async function initializeGapiClient() {
+        gapiInited = true;
+      }
+
+      /**
+       * Callback after Google Identity Services are loaded.
+       */
+      function gisLoaded() {
+        gisInited = true;
+      }
+    </script>
+    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+    <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

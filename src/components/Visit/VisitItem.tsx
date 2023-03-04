@@ -14,7 +14,7 @@ function VisitItem({ visit }: Props) {
   if (visit === null) return <Card>Visit does not exists.</Card>;
 
   const toogleVisitDetails = (event: React.MouseEvent | React.KeyboardEvent) => {
-    if ("key" in event && event.code !== "Space") {
+    if ("key" in event && !Array.from(["Space", "Enter"]).includes(event.code)) {
       return;
     }
     setDetailsHidden((prev) => !prev);
