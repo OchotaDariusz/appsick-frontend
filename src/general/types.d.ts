@@ -12,6 +12,10 @@ export type PatientObject = Patient | PatientDTO;
 
 export type VisitObject = Visit | VisitDTO;
 
+export type VisitStatus = "PENDING" | "MISSED" | "MOVED" | "COMPLETED" | "UNKNOWN";
+
+export type VisitType = "LOCAL" | "ONLINE" | "EXAMINATION" | "PRESCRIPTIONS";
+
 export type MedicalDataObject = MedicalData | MedicalDataDTO;
 
 export type ChatMessageObject = ChatMessage | ChatMessageDTO;
@@ -56,21 +60,21 @@ export interface UserDetails {
 
 export interface User {
   userId: number;
-  firstName: string;
-  lastName: string;
-  birthDate?: DateObject;
-  image?: string;
+  firstName: string | null;
+  lastName: string | null;
+  birthDate?: DateObject | null;
+  image?: string | null;
   sex?: Sex;
-  telephoneNumber: string;
+  telephoneNumber: string | null;
   email: string;
-  password?: string;
+  password?: string | null;
   role?: Role;
   provider?: Provider;
 }
 
 export interface Doctor {
   doctorId: number;
-  about?: string;
+  about?: string | null;
   user?: User;
   medicalSpecialities: DoctorSpeciality[];
 }
@@ -131,12 +135,14 @@ export interface Visit {
   visitId: number;
   patient?: Patient;
   doctor?: Doctor;
-  clinic?: Clinic;
-  doctorSpeciality: string;
+  clinic?: Clinic | null;
+  doctorSpeciality: string | null;
   date: DateObject;
   online: boolean;
-  reason: string;
-  chatMessageHistory?: ChatMessage[] | ChatMessageDTO[];
+  reason: string | null;
+  chatMessageHistory?: ChatMessage[] | ChatMessageDTO[] | null;
+  status: VisitStatus;
+  visitTypes: VisitType[];
 }
 
 export interface VisitDTO extends Visit {

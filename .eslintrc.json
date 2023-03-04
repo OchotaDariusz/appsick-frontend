@@ -27,9 +27,10 @@
     }
   },
   "rules": {
-    "indent": ["error", 2],
-    "quotes": ["error", "double"],
-    "semi": ["error", "always"],
+    "@typescript-eslint/interface-name-prefix": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "linebreak-style": 0,
     "@typescript-eslint/no-explicit-any": ["error", { "ignoreRestArgs": true }],
     "no-console": "off",
     "prettier/prettier": [

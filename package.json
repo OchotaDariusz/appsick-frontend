@@ -8,7 +8,7 @@
     "build": "tsc && vite build",
     "build-win": "set \"GENERATE_SOURCEMAP=false\" && tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint --ext .ts,.tsx --ignore-path .gitignore --fix src",
+    "lint": "eslint --ext .ts,.tsx,.scss --ignore-path .gitignore --fix src",
     "format": "prettier .  --write",
     "test": "vitest"
   },
