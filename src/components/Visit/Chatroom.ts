@@ -13,7 +13,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { ChatMessageObject, UserDetails, ErrorMessage } from "../../general/types";
+import { ChatMessageObject, UserDetails, ErrorMessage, ChatMessageDTO } from "../../general/types";
 import { firebaseConfig } from "../../general/utils";
 import { getUser, postVisitChatMessages } from "../../general/dataManager";
 
@@ -86,7 +86,7 @@ class Chatroom {
       chatMessage.date = new Date(chatMessage.date.toDate());
       chatHistory.push(chatMessage as ChatMessageObject);
     });
-    postVisitChatMessages(chatHistory)
+    postVisitChatMessages(chatHistory as ChatMessageDTO[])
       .then(() => {
         getDocs(queryResults)
           .then((snapshot) => {

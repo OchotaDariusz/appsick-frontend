@@ -11,7 +11,13 @@ function AllVisitsPage() {
     setVisits(visitsToSet);
   }, [setVisits]);
 
-  return visits.map((visit) => <VisitItem key={visit.visitId} visit={visit} />);
+  return (
+    <>
+      {visits.map((visit) => (
+        <VisitItem key={visit.visitId} visit={visit} />
+      ))}
+    </>
+  );
 }
 
 export default AllVisitsPage;
