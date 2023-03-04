@@ -1,4 +1,18 @@
-@use "sass";
+@use "sass" as *;
 
 @media (prefers-color-scheme: light) {
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: $color-danger;
+  background: $page-background;
+
+  max-width: 95%;
+  min-height: 100vh;
+  min-height: 100svh;
+  min-height: 100dvh;
 }

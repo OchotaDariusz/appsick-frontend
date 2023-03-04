@@ -19,7 +19,7 @@ function Button({ id, className, children, type, onClick, darkMode, modalTarget 
     /* eslint-disable react/button-has-type */
     <button
       id={id}
-      className={`btn ${btnColor}${classes}`}
+      className={`btn mx-1 ${btnColor}${classes}`}
       type={type}
       onClick={onClick}
       data-bs-toggle="modal"

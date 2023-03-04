@@ -1,10 +1,11 @@
 import React from "react";
 import logo from "../../assets/logo.svg";
 import Button from "./Button";
+import "./Navbar.scss";
 
 function Navbar() {
   return (
-    <nav role="navigation" className="navbar navbar-expand-lg bg-body-tertiary shadow-sm rounded-5">
+    <nav role="navigation" className="navbar navbar-expand-lg bg-light shadow-sm rounded-5">
       <div className="container-fluid">
         <a className="navbar-brand w-25" href="/">
           <img className="w-50 h-25" src={logo} alt="logo" />

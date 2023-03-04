@@ -1,4 +1,5 @@
 import React from "react";
+import "./Card.scss";
 
 type Props = {
   className?: string;
@@ -9,7 +10,7 @@ function Card({ className, children }: Props) {
   const classes = className;
 
   return (
-    <div className={`card ${classes}` || ""}>
+    <div className={`card bg-light ${classes}` || ""}>
       <div className="card-body">{children}</div>
     </div>
   );

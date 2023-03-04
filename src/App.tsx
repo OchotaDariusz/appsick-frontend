@@ -7,7 +7,6 @@ import AuthModal from "./components/Auth/AuthModal";
 import VisitRegisterModal from "./components/Visit/VisitRegisterModal";
 import VisitEndModal from "./components/Visit/VisitEndModal";
 import Navbar from "./components/UI/Navbar";
-import "./App.scss";
 
 function App() {
   const isDomReady = useDomReady();
@@ -25,7 +24,7 @@ function App() {
         ? ReactDOM.createPortal(<VisitEndModal />, document.getElementById("visit-end-modal") as HTMLElement)
         : null}
       {isDomReady ? ReactDOM.createPortal(<Navbar />, document.getElementById("navbar") as HTMLElement) : null}
-      <div className="App">
+      <div className="container-fluid p-3 p-lg-5 mt-2">
         <Card className="border-0 shadow-lg rounded-4">
           <Outlet />
         </Card>

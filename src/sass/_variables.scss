@@ -1,5 +1,12 @@
-$card-background: #ccc;
-$color-white-smoke: #f4f4f4;
-$color-dark: #080604;
-$color-primary: #657eb7;
-$color-secondary: #3c5177;
+$color-primary: #5488e6;
+$color-secondary: #0b57d0;
+$color-success: #48a85b;
+$color-info: #ccc;
+$color-warning: #f5b816;
+$color-danger: #e65041;
+$color-light: #f4f4f4;
+$color-dark: #c6322e;
+
+$card-background: $color-info;
+$page-background: linear-gradient(135deg, #fff 0%, $color-light 75%),
+  linear-gradient(135deg, $color-light 75%, $color-info 100%);
