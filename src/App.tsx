@@ -2,11 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Outlet } from "react-router-dom";
 import useDomReady from "./hooks/useDomReady";
-import Card from "./components/UI/Card";
+import Card from "./components/UI/Card/Card";
 import AuthModal from "./components/Auth/AuthModal";
 import VisitRegisterModal from "./components/Visit/VisitRegisterModal";
 import VisitEndModal from "./components/Visit/VisitEndModal";
-import Navbar from "./components/UI/Navbar";
+import Navbar from "./components/UI/Navbar/Navbar";
 
 function App() {
   const isDomReady = useDomReady();

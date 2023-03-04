@@ -1,7 +1,7 @@
 import React from "react";
 import { postLoginData, postLogout } from "../../general/dataManager";
-import Modal from "../UI/Modal";
-import Button from "../UI/Button";
+import Modal from "../UI/Modal/Modal";
+import Button from "../UI/Button/Button";
 
 function LoginForm() {
   const login = () => {

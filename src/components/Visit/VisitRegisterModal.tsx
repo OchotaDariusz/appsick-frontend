@@ -1,5 +1,5 @@
 import React from "react";
-import Modal from "../UI/Modal";
+import Modal from "../UI/Modal/Modal";
 
 function VisitRegisterModal() {
   return (
