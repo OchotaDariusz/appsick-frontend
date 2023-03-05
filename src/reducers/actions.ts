@@ -3,9 +3,7 @@ import { FormEventHandler, ReducerAction } from "react";
 enum ACTION {
   GET_TEXT,
   GET_NUMBER,
-  GET_DATE,
-  GET_BOOLEAN,
-  GET_OBJECT,
+  AUTH,
 }
 
 export default ACTION;
