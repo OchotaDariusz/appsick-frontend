@@ -2,6 +2,7 @@ import React from "react";
 import { postLoginData, postLogout } from "../../general/dataManager";
 import Modal from "../UI/Modal/Modal";
 import Button from "../UI/Button/Button";
+import RegisterForm from "./RegisterForm";
 
 function LoginForm() {
   const login = () => {
@@ -13,10 +14,6 @@ function LoginForm() {
       .catch((err) => console.error(err));
   };
   return <Button onClick={login}>TryLogin</Button>;
-}
-
-function RegisterForm() {
-  return <p>register</p>;
 }
 
 function AuthModal() {
