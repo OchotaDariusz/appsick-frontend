@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useReducer, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { getDoctorsBySpeciality, getDoctorSpecialities, postNewVisit } from "../../general/dataManager";
+import { getDoctorsBySpeciality, postNewVisit } from "../../general/dataManager";
 import { DoctorObject, DoctorSpeciality, VisitEvent, VisitObject, VisitRegisterRequest } from "../../general/types";
+import useGetDoctorsBySpeciality from "../../hooks/useGetDoctorsBySpeciality";
+import useGetDoctorSpecialities from "../../hooks/useGetDoctorSpecialities";
 import ACTION from "../../reducers/actions";
 import visitRegFormReducer from "../../reducers/visitRegFormReducer";
 import Button from "../UI/Button/Button";
@@ -36,28 +38,11 @@ function VisitRegisterForm() {
   const [doctorSpecialities, setDoctorSpecialities] = useState<DoctorSpeciality[]>([]);
   const [availableDoctors, setAvailableDoctors] = useState<DoctorObject[]>([]);
 
-  useEffect(() => {
-    getDoctorSpecialities()
-      .then((specialities) => {
-        if (Array.isArray(specialities)) {
-          setDoctorSpecialities(specialities);
-        }
-      })
-      .catch((err) => console.error(err.message));
-  }, []);
-
-  useEffect(() => {
-    if (selectedSpeciality !== formState.doctorSpeciality) {
-      selectedSpeciality = formState.doctorSpeciality;
-      getDoctorsBySpeciality(selectedSpeciality)
-        .then((doctors) => {
-          if (Array.isArray(doctors)) {
-            setAvailableDoctors(doctors);
-          }
-        })
-        .catch((err) => console.error(err.message));
-    }
-  }, [doctorSpecialities, formState.doctorSpeciality]);
+  useGetDoctorSpecialities(setDoctorSpecialities);
+  selectedSpeciality = useGetDoctorsBySpeciality(setAvailableDoctors, selectedSpeciality, [
+    doctorSpecialities,
+    formState,
+  ]);
 
   const handleTextChange = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     dispatch({
