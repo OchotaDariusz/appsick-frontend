@@ -1,4 +1,5 @@
 import React, { useState, useReducer, useRef } from "react";
+import ApiCalendar from "react-google-calendar-api";
 import { useNavigate } from "react-router-dom";
 import { postNewVisit } from "../../general/dataManager";
 import { DoctorObject, DoctorSpeciality, VisitEvent, VisitObject, VisitRegisterRequest } from "../../general/types";
@@ -8,7 +9,7 @@ import { handleTextChange, handleNumberChange } from "../../reducers/actions";
 import visitRegFormReducer from "../../reducers/visitRegFormReducer";
 import Button from "../UI/Button/Button";
 
-const ONLINE_CLINIC_ID = 1; // TODO discuss. Maybe id should be nullable
+const ONLINE_CLINIC_ID = 1; // TODO discuss. ?
 
 const visitTemplate: VisitRegisterRequest = {
   visitId: null,
@@ -31,7 +32,12 @@ const visitTemplate: VisitRegisterRequest = {
 };
 
 let selectedSpeciality: DoctorSpeciality;
-function VisitRegisterForm() {
+
+type Props = {
+  apiCalendar?: ApiCalendar;
+};
+
+function VisitRegisterForm({ apiCalendar }: Props) {
   const navigate = useNavigate();
   const formRef = useRef<HTMLFormElement>(null);
   const [formState, dispatch] = useReducer(visitRegFormReducer, visitTemplate);
@@ -72,7 +78,7 @@ function VisitRegisterForm() {
             dateTime: new Date(eventDate.getTime() + 3600000).toISOString(),
             timeZone: "Europe/Warsaw",
           },
-          attendees: [{ email: "userDetails.email" }],
+          attendees: [{ email: "ochota.dariusz@gmail.com" }],
           reminders: {
             useDefault: false,
             overrides: [
@@ -81,8 +87,12 @@ function VisitRegisterForm() {
             ],
           },
         };
-        // apiCalendar.createEventWithVideoConference(visitEvent);
-        navigate("/visit");
+        const calendarEventRequest = (apiCalendar as ApiCalendar).createEventWithVideoConference(visitEvent);
+        calendarEventRequest.execute((registeredEvent: Partial<VisitEvent>) => {
+          console.log("Event created!");
+          console.log(registeredEvent);
+          navigate("/visit");
+        });
       })
       .catch((err) => console.log(err.message));
   };
@@ -174,5 +184,9 @@ function VisitRegisterForm() {
     </form>
   );
 }
+
+VisitRegisterForm.defaultProps = {
+  apiCalendar: null,
+};
 
 export default VisitRegisterForm;

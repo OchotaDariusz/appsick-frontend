@@ -1,17 +1,14 @@
-import ApiCalendar from "react-google-calendar-api";
 import { ConfigApiCalendar, Visit, VisitObject } from "./types";
 import maleDoctorAv from "../assets/male.svg";
 import femaleDoctorAv from "../assets/female.svg";
 
 // config for google calendar
-const calendarConfig: ConfigApiCalendar = {
+export const calendarConfig: ConfigApiCalendar = {
   clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
   apiKey: import.meta.env.VITE_GOOGLE_APP_ID,
   scope: "https://www.googleapis.com/auth/calendar",
   discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
 };
-
-export const apiCalendar = new ApiCalendar(calendarConfig);
 
 // config for firebase
 export const firebaseConfig = {
