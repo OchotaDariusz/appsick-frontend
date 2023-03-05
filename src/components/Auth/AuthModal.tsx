@@ -1,20 +1,9 @@
 import React from "react";
-import { postLoginData, postLogout } from "../../general/dataManager";
+import { postLogout } from "../../general/dataManager";
 import Modal from "../UI/Modal/Modal";
 import Button from "../UI/Button/Button";
+import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
-
-function LoginForm() {
-  const login = () => {
-    postLoginData({ email: "aaa@aaa", password: "aaa@aaa" })
-      .then((data) => {
-        console.log(`logged in, data: ${data}`);
-        console.log(data);
-      })
-      .catch((err) => console.error(err));
-  };
-  return <Button onClick={login}>TryLogin</Button>;
-}
 
 function AuthModal() {
   const logout = () => {

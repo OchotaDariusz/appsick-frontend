@@ -156,7 +156,7 @@ function VisitRegisterForm() {
         }
       />
       <div className="d-grid gap-2">
-        <Button type="submit">Submit</Button>
+        <Button type="submit">Register</Button>
       </div>
     </form>
   );

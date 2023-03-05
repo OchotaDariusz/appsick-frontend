@@ -50,7 +50,7 @@ function Navbar() {
                 </Button>
               </li>
               <li className="nav-item">
-                <a href="visit/new" className="btn btn-primary text-white nav-link">
+                <a href="/visit/new" className="btn btn-primary text-white nav-link">
                   Register New Visit
                 </a>
               </li>
@@ -66,7 +66,7 @@ function Navbar() {
           <Button modalTarget="#visitEndModal" className="btn-danger">
             End Visit
           </Button>
-          <a href="visit/new" className="btn btn-primary text-white">
+          <a href="/visit/new" className="btn btn-primary text-white">
             Register New Visit
           </a>
           <Button id="login-btn-lg" modalTarget="#authModal" className="btn-secondary">

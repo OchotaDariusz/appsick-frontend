@@ -12,4 +12,11 @@ describe("VisitRegisterForm", () => {
     // EXPECT
     expect(screen.getByText("What kind of service do you require?:")).toBeVisible();
   });
+  it("Renders Visit Register Form buttons", () => {
+    // ARRANGE
+    render(<VisitRegisterForm />);
+    // ACT
+    // EXPECT
+    expect(screen.getByRole("button")).toHaveTextContent("Register");
+  });
 });
