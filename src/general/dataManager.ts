@@ -253,7 +253,7 @@ export const getDoctorsByClinicId = async (clinicId: number | string): Promise<D
 
 export const getDoctorsBySpeciality = async (speciality: DoctorSpeciality): Promise<DoctorObject[] | ErrorMessage> => {
   try {
-    return await (getData(`/specialities/${speciality}`) as Promise<DoctorObject[]>);
+    return await (getData(`/doctor/specialities/${speciality}`) as Promise<DoctorObject[]>);
   } catch {
     return {
       errorMessage: "Cannot fetch doctors by their specialities data.",
@@ -263,7 +263,7 @@ export const getDoctorsBySpeciality = async (speciality: DoctorSpeciality): Prom
 
 export const getDoctorSpecialities = async (): Promise<DoctorSpeciality[] | ErrorMessage> => {
   try {
-    return await (getData("/specialities") as Promise<DoctorSpeciality[]>);
+    return await (getData("/doctor/specialities") as Promise<DoctorSpeciality[]>);
   } catch {
     return {
       errorMessage: "Cannot fetch doctor specialities data.",

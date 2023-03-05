@@ -152,6 +152,26 @@ export interface VisitDTO extends Visit {
   clinicId?: number;
 }
 
+export interface VisitRegisterRequest {
+  visitId: null;
+  clinic: {
+    clinicId: number;
+  };
+  date: string;
+  doctor: {
+    doctorId: number;
+  };
+  doctorId?: number;
+  doctorSpeciality: string;
+  online: boolean;
+  patient: {
+    patientId: number;
+  };
+  reason: string;
+  status: VisitStatus;
+  visitTypes: null;
+}
+
 // google api calendar helper types
 export interface ConfigApiCalendar {
   clientId: string;

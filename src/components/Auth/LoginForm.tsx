@@ -13,7 +13,7 @@ const initialLoginFormState: LoginRequest = {
 function LoginForm() {
   const [formState, dispatch] = useReducer(userLoginFormReducer, initialLoginFormState);
 
-  const handleTextChange = (e: React.FormEvent<HTMLInputElement> | React.FormEvent<HTMLTextAreaElement>) => {
+  const handleTextChange = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     dispatch({
       type: ACTION.GET_TEXT,
       field: (e.target as HTMLInputElement | HTMLTextAreaElement).name,

@@ -15,16 +15,23 @@ function Button({ id, className, children, type, onClick, darkMode, modalTarget 
   const classes = className ?? "";
   const btnColor = darkMode ? "btn-dark " : "btn-primary ";
 
+  /* eslint-disable react/button-has-type */
+  if (modalTarget) {
+    return (
+      <button
+        id={id}
+        className={`btn text-white mx-1 ${btnColor}${classes}`}
+        type={type}
+        onClick={onClick}
+        data-bs-toggle="modal"
+        data-bs-target={modalTarget ?? ""}
+      >
+        {children}
+      </button>
+    );
+  }
   return (
-    /* eslint-disable react/button-has-type */
-    <button
-      id={id}
-      className={`btn text-white mx-1 ${btnColor}${classes}`}
-      type={type}
-      onClick={onClick}
-      data-bs-toggle="modal"
-      data-bs-target={modalTarget ?? ""}
-    >
+    <button id={id} className={`btn text-white mx-1 ${btnColor}${classes}`} type={type} onClick={onClick}>
       {children}
     </button>
     /* eslint-enable react/button-has-type */
