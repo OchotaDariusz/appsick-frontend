@@ -1,9 +1,11 @@
 import React, { useReducer } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "../UI/Button/Button";
 import { RegisterRequest } from "../../general/types";
 import { handleTextChange } from "../../reducers/actions";
 import userRegFormReducer from "../../reducers/userRegFormReducer";
 import { postRegisterData } from "../../general/dataManager";
+import { closeModal } from "../../general/utils";
 
 const initialRegisterFormState: RegisterRequest = {
   email: "",
@@ -18,6 +20,7 @@ const initialRegisterFormState: RegisterRequest = {
 
 function RegisterForm() {
   const [formState, dispatch] = useReducer(userRegFormReducer, initialRegisterFormState);
+  const navigate = useNavigate();
 
   const textChangeHandler = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     handleTextChange(dispatch, e);
@@ -29,6 +32,8 @@ function RegisterForm() {
       .then((data) => {
         console.log("Registered new user");
         console.log(data);
+        closeModal();
+        navigate("/");
       })
       .catch((err) => console.error(err));
   };

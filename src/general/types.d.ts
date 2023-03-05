@@ -57,7 +57,17 @@ export interface UserDetails {
   accountNonLocked: boolean;
   credentialsNonExpired: boolean;
 }
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export interface AuthObject {
+  id: any;
+  email: any;
+  firstName: any;
+  lastName: any;
+  role: any;
+  patientId?: any;
+  doctorId?: any;
+}
+/* eslint-enable @typescript-eslint/no-explicit-any */
 export interface User {
   userId: number;
   firstName: string | null;

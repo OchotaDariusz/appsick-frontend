@@ -1,7 +1,9 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { postPatientMedicalData } from "../../general/dataManager";
 import { MedicalDataObject } from "../../general/types";
+import { closeModal } from "../../general/utils";
 import Button from "../UI/Button/Button";
 import Modal from "../UI/Modal/Modal";
 
@@ -21,6 +23,7 @@ const medicalDataTemplate = {
 function VisitEndModal() {
   const formRef = useRef<HTMLFormElement>(null);
   const [medicalData, setMedicalData] = useState<MedicalDataObject>(medicalDataTemplate);
+  const navigate = useNavigate();
 
   const submitForm = (event: React.FormEvent) => {
     event.preventDefault();
@@ -33,6 +36,8 @@ function VisitEndModal() {
       .then(() => {
         (formRef.current as HTMLFormElement).reset();
         // endVisit(); // TODO: add endVisit function
+        closeModal();
+        navigate("/");
       })
       .catch((err) => console.log(err.message));
   };

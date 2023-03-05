@@ -1,8 +1,8 @@
 import React from "react";
+import { BrowserRouter } from "react-router-dom";
 import { describe, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 
-import { BrowserRouter } from "react-router-dom";
 import VisitRegisterForm from "./VisitRegisterForm";
 
 describe("VisitRegisterForm", () => {

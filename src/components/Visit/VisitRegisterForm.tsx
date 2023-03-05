@@ -1,6 +1,6 @@
 import React, { useState, useReducer, useRef } from "react";
-import ApiCalendar from "react-google-calendar-api";
 import { useNavigate } from "react-router-dom";
+import ApiCalendar from "react-google-calendar-api";
 import { postNewVisit } from "../../general/dataManager";
 import { DoctorObject, DoctorSpeciality, VisitEvent, VisitObject, VisitRegisterRequest } from "../../general/types";
 import useGetDoctorsBySpeciality from "../../hooks/useGetDoctorsBySpeciality";

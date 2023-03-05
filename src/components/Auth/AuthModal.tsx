@@ -1,16 +1,24 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { logout } from "../../reducers/store";
 import { postLogout } from "../../general/dataManager";
 import Modal from "../UI/Modal/Modal";
 import Button from "../UI/Button/Button";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
+import { closeModal } from "../../general/utils";
 
 function AuthModal() {
-  const logout = () => {
+  const navigate = useNavigate();
+  const authDispatch = useAppDispatch();
+
+  const signOut = () => {
     postLogout()
       .then(() => {
-        console.log("logged out");
-        window.location.reload();
+        authDispatch(logout());
+        closeModal();
+        navigate("/");
       })
       .catch((err) => console.error(err));
   };
@@ -57,7 +65,7 @@ function AuthModal() {
           <RegisterForm />
         </div>
       </div>
-      <Button onClick={logout}>Logout</Button>
+      <Button onClick={signOut}>Logout</Button>
     </Modal>
   );
 }

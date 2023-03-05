@@ -1,6 +1,7 @@
-import { ConfigApiCalendar, Visit, VisitObject } from "./types";
+import { AuthObject, ConfigApiCalendar, UserDetails, Visit, VisitObject } from "./types";
 import maleDoctorAv from "../assets/male.svg";
 import femaleDoctorAv from "../assets/female.svg";
+import { userDetailsTemplate } from "../reducers/store";
 
 // config for google calendar
 export const calendarConfig: ConfigApiCalendar = {
@@ -54,4 +55,19 @@ export const extractDoctorDataFromVisit = (visit: Visit) => {
   const doctorFullName = `${doctorFirstName} ${doctorLastName}`;
   const doctorMedicalSpeciality = (visit as Visit).doctor?.medicalSpecialities[0] ?? "docSpeciality";
   return [doctorAvatar, doctorFullName, doctorMedicalSpeciality];
+};
+
+export const mapDataToAuthObject = (userDetails: UserDetails): AuthObject => {
+  const authObject = { ...userDetailsTemplate };
+  authObject.id = (userDetails as UserDetails).id;
+  authObject.firstName = (userDetails as UserDetails).firstName;
+  authObject.lastName = (userDetails as UserDetails).lastName;
+  authObject.email = (userDetails as UserDetails).email;
+  authObject.role = (userDetails as UserDetails).role;
+  return authObject;
+};
+
+export const closeModal = () => {
+  const btns = document.querySelectorAll(".btn-close");
+  btns.forEach((btn) => (btn as HTMLButtonElement).click());
 };

@@ -67,13 +67,13 @@ function Navbar() {
           </ul>
         </div>
         <span className="navbar-text justify-content-lg-end align-items-lg-baseline d-none d-lg-flex w-25 h-25">
-          <Button modalTarget="#visitEndModal" className="btn-danger bg-gradient shadow-sm hover-glow">
+          <Button modalTarget="#visitEndModal" className="btn-danger bg-gradient shadow-sm">
             End Visit
           </Button>
-          <a href="/visit/new" className="btn btn-primary text-white bg-gradient shadow-sm hover-glow">
+          <a href="/visit/new" className="btn btn-primary text-white bg-gradient shadow-sm">
             Register New Visit
           </a>
-          <Button id="login-btn-lg" modalTarget="#authModal" className="btn-secondary bg-gradient shadow-sm hover-glow">
+          <Button id="login-btn-lg" modalTarget="#authModal" className="btn-secondary bg-gradient shadow-sm">
             Login | Register
           </Button>
         </span>
