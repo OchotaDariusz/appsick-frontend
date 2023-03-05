@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useReducer, useRef } from "react";
+import React, { useState, useReducer, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { getDoctorsBySpeciality, postNewVisit } from "../../general/dataManager";
+import { postNewVisit } from "../../general/dataManager";
 import { DoctorObject, DoctorSpeciality, VisitEvent, VisitObject, VisitRegisterRequest } from "../../general/types";
 import useGetDoctorsBySpeciality from "../../hooks/useGetDoctorsBySpeciality";
 import useGetDoctorSpecialities from "../../hooks/useGetDoctorSpecialities";
-import ACTION from "../../reducers/actions";
+import { handleTextChange, handleNumberChange } from "../../reducers/actions";
 import visitRegFormReducer from "../../reducers/visitRegFormReducer";
 import Button from "../UI/Button/Button";
 
@@ -44,20 +44,11 @@ function VisitRegisterForm() {
     formState,
   ]);
 
-  const handleTextChange = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    dispatch({
-      type: ACTION.GET_TEXT,
-      field: (e.target as HTMLInputElement | HTMLTextAreaElement).name,
-      payload: (e.target as HTMLInputElement | HTMLTextAreaElement).value,
-    });
+  const textChangeHandler = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    handleTextChange(dispatch, e);
   };
-
-  const handleNumberChange = (e: React.FormEvent<HTMLSelectElement>) => {
-    dispatch({
-      type: ACTION.GET_NUMBER,
-      field: (e.target as HTMLSelectElement).name,
-      payload: (e.target as HTMLSelectElement).value,
-    });
+  const numberChangeHandler = (e: React.FormEvent<HTMLSelectElement>) => {
+    handleNumberChange(dispatch, e);
   };
 
   const submitForm = (event: React.FormEvent) => {
@@ -106,7 +97,7 @@ function VisitRegisterForm() {
         name="doctorSpeciality"
         value={formState.doctorSpeciality}
         className="form-select"
-        onChange={(e) => handleTextChange(e)}
+        onChange={(e) => textChangeHandler(e)}
         required
       >
         <option value="" hidden>
@@ -129,7 +120,7 @@ function VisitRegisterForm() {
         id="visitDoctor"
         name="doctorId"
         className="form-select mb-3"
-        onChange={(e) => handleNumberChange(e)}
+        onChange={(e) => numberChangeHandler(e)}
         required
       >
         <option value="" hidden>
@@ -162,7 +153,7 @@ function VisitRegisterForm() {
         value={formState.date}
         className="form-control mb-3"
         type="datetime-local"
-        onChange={(e) => handleTextChange(e)}
+        onChange={(e) => textChangeHandler(e)}
         required
       />
       <label htmlFor="visitReason" className="form-label">
@@ -175,7 +166,7 @@ function VisitRegisterForm() {
         className="form-control mb-3"
         maxLength={255}
         required
-        onChange={(e) => handleTextChange(e)}
+        onChange={(e) => textChangeHandler(e)}
       />
       <div className="d-grid gap-2">
         <Button type="submit">Register</Button>

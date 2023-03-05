@@ -35,7 +35,7 @@ function VisitItem({ visit }: Props) {
               role="button"
               tabIndex={0}
             >
-              <div className="col-2 px-3 d-none d-lg-block">
+              <div className="col-2 px-md-2 px-xl-3 d-none d-lg-block">
                 <div className="col-auto rounded-3 bg-white text-dark shadow-sm p-2 border border-2">
                   {(visit.date as string[])[0]}
                   <hr />
@@ -43,7 +43,7 @@ function VisitItem({ visit }: Props) {
                 </div>
               </div>
 
-              <div className="col-12 col-lg-10 rounded-3 bg-white text-dark ms-3 pb-3 px-4 pt-2 border border-2">
+              <div className="col-12 col-lg-10 rounded-3 shadow-sm bg-white text-dark ms-3 pb-3 px-4 pt-2 border border-2">
                 <div className="row justify-content-between">
                   <div className="col-auto my-1 fs-3 text-start">{doctorFullName}</div>
                   <div className="col-auto my-1 fs-4 text-end">{doctorSpeciality}</div>
@@ -54,17 +54,12 @@ function VisitItem({ visit }: Props) {
 
           <div className={`collapse ${detailsHidden ? "" : "show"}`} id="collapseExample">
             <div className="row text-center">
-              <div className="col-2 px-3 mt-3 d-none d-lg-block">
-                <img
-                  src={doctorAvatar}
-                  className="m-2 img-fluid rounded-circle"
-                  style={{ height: "100px", width: "100px" }}
-                  alt="doctor"
-                />
+              <div className="col-2 mt-3 d-none d-lg-block">
+                <img src={doctorAvatar} className="m-2 img-thumbnail rounded-4 shadow-sm hover-glow" alt="doctor" />
               </div>
               <div className="col-12 col-lg-10 my-3 pb-3 px-4 pt-2">
                 <Card>
-                  <div className="col-auto rounded-2 bg-white text-dark p-2 mb-3 shadow-sm d-lg-none">
+                  <div className="col-auto rounded-2 bg-white text-dark p-2 mb-3 shadow-sm d-lg-none hover-glow">
                     <h6>Date</h6>
                     {(visit.date as string[])[0]}
                     <hr />

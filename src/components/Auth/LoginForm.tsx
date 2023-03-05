@@ -1,7 +1,7 @@
 import React, { useReducer } from "react";
 import Button from "../UI/Button/Button";
 import { LoginRequest } from "../../general/types";
-import ACTION from "../../reducers/actions";
+import { handleTextChange } from "../../reducers/actions";
 import userLoginFormReducer from "../../reducers/userLoginFormReducer";
 import { postLoginData } from "../../general/dataManager";
 
@@ -13,12 +13,8 @@ const initialLoginFormState: LoginRequest = {
 function LoginForm() {
   const [formState, dispatch] = useReducer(userLoginFormReducer, initialLoginFormState);
 
-  const handleTextChange = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    dispatch({
-      type: ACTION.GET_TEXT,
-      field: (e.target as HTMLInputElement | HTMLTextAreaElement).name,
-      payload: (e.target as HTMLInputElement | HTMLTextAreaElement).value,
-    });
+  const textChangeHandler = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    handleTextChange(dispatch, e);
   };
 
   const submitForm = (e: React.FormEvent) => {
@@ -43,7 +39,7 @@ function LoginForm() {
         className="form-control mb-3"
         type="email"
         value={formState.email}
-        onChange={(e) => handleTextChange(e)}
+        onChange={(e) => textChangeHandler(e)}
         required
       />
       <label htmlFor="passwordLogin" className="form-label">
@@ -55,7 +51,7 @@ function LoginForm() {
         className="form-control mb-3"
         type="password"
         value={formState.password}
-        onChange={(e) => handleTextChange(e)}
+        onChange={(e) => textChangeHandler(e)}
         required
       />
       <div className="d-grid gap-2">

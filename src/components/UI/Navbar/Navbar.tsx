@@ -21,7 +21,7 @@ function Navbar() {
         >
           <span className="navbar-toggler-icon" />
         </button>
-        <div className="collapse navbar-collapse justify-content-lg-center" id="navbarNav">
+        <div className="collapse navbar-collapse text-center justify-content-center" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item">
               <a className="nav-link" aria-current="page" href="/visit">
@@ -45,17 +45,21 @@ function Navbar() {
             </li>
             <div className="d-grid gap-2 d-block d-lg-none">
               <li className="nav-item">
-                <Button modalTarget="#visitEndModal" className="btn-danger nav-link mx-auto w-100">
+                <Button modalTarget="#visitEndModal" className="btn-danger nav-link mx-auto w-100 bg-gradient">
                   End Visit
                 </Button>
               </li>
               <li className="nav-item">
-                <a href="/visit/new" className="btn btn-primary text-white nav-link">
+                <a href="/visit/new" className="btn btn-primary text-white nav-link bg-gradient">
                   Register New Visit
                 </a>
               </li>
               <li className="nav-item">
-                <Button id="login-btn-sm" modalTarget="#authModal" className="btn-secondary nav-link mx-auto w-100">
+                <Button
+                  id="login-btn-sm"
+                  modalTarget="#authModal"
+                  className="btn-secondary nav-link mx-auto w-100 bg-gradient"
+                >
                   Login | Register
                 </Button>
               </li>
@@ -63,13 +67,13 @@ function Navbar() {
           </ul>
         </div>
         <span className="navbar-text justify-content-lg-end align-items-lg-baseline d-none d-lg-flex w-25 h-25">
-          <Button modalTarget="#visitEndModal" className="btn-danger">
+          <Button modalTarget="#visitEndModal" className="btn-danger bg-gradient shadow-sm hover-glow">
             End Visit
           </Button>
-          <a href="/visit/new" className="btn btn-primary text-white">
+          <a href="/visit/new" className="btn btn-primary text-white bg-gradient shadow-sm hover-glow">
             Register New Visit
           </a>
-          <Button id="login-btn-lg" modalTarget="#authModal" className="btn-secondary">
+          <Button id="login-btn-lg" modalTarget="#authModal" className="btn-secondary bg-gradient shadow-sm hover-glow">
             Login | Register
           </Button>
         </span>
