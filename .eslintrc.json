@@ -1,7 +1,8 @@
 {
   "env": {
     "browser": true,
-    "node": true
+    "node": true,
+    "jest": true
   },
   "extends": [
     "airbnb",
@@ -30,8 +31,13 @@
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
-    "linebreak-style": 0,
     "@typescript-eslint/no-explicit-any": ["error", { "ignoreRestArgs": true }],
+    "jsx-a11y/label-has-associated-control": [ "error", {
+      "required": {
+        "some": [ "id" ]
+      }
+    }],
+    "linebreak-style": 0,
     "no-console": "off",
     "prettier/prettier": [
       "error",

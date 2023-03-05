@@ -1,9 +1,7 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useRef } from "react";
-import Button from "../UI/Button/Button";
-import Modal from "../UI/Modal/Modal";
 import { postNewVisit } from "../../general/dataManager";
 import { Visit, VisitEvent, VisitObject } from "../../general/types";
+import Button from "../UI/Button/Button";
 
 const ONLINE_CLINIC_ID = 1; // TODO discuss. Maybe id should be nullable
 
@@ -26,7 +24,7 @@ const visitTemplate = {
   visitTypes: null,
 };
 
-function VisitRegisterModal() {
+function VisitRegisterForm() {
   const formRef = useRef<HTMLFormElement>(null);
   const [visitData, setVisitData] = useState<VisitObject>(visitTemplate as VisitObject);
 
@@ -57,29 +55,31 @@ function VisitRegisterModal() {
           },
         };
         // apiCalendar.createEventWithVideoConference(visitEvent);
-        // TODO: close modal?
+        // TODO: redirect to visits page
       })
       .catch((err) => console.log(err.message));
   };
 
   return (
-    <Modal id="visitRegisterModal" ariaLabel="visitRegisterModalLabel">
-      <form id="visitRegisterForm" onSubmit={submitForm} ref={formRef}>
-        <label className="form-label">What kind of service do you require?:</label>
-        <select
-          className="form-select"
-          onChange={(e) =>
-            setVisitData({
-              ...visitData,
-              doctorSpeciality: e.target.value,
-            } as VisitObject)
-          }
-          required
-        >
-          <option value="" hidden>
-            - Select a Speciality -
-          </option>
-          {/* {isDoctorSpecialitiesLoading
+    <form className="text-center" id="visitRegisterForm" onSubmit={submitForm} ref={formRef}>
+      <label htmlFor="visitSpeciality" className="form-label">
+        What kind of service do you require?:
+      </label>
+      <select
+        id="visitSpeciality"
+        className="form-select"
+        onChange={(e) =>
+          setVisitData({
+            ...visitData,
+            doctorSpeciality: e.target.value,
+          } as VisitObject)
+        }
+        required
+      >
+        <option value="" hidden>
+          - Select a Speciality -
+        </option>
+        {/* {isDoctorSpecialitiesLoading
             ? ""
             : doctorSpecialities.map((speciality) => {
                 return (
@@ -88,24 +88,27 @@ function VisitRegisterModal() {
                   </option>
                 );
               })} */}
-        </select>
-        <label className="form-label">Doctor</label>
-        <select
-          className="form-select mb-3"
-          onChange={(e) =>
-            setVisitData({
-              ...visitData,
-              doctor: {
-                doctorId: +e.target.value,
-              },
-            } as VisitObject)
-          }
-          required
-        >
-          <option value="" hidden>
-            - Select a Doctor -
-          </option>
-          {/* {isDoctorListLoading
+      </select>
+      <label htmlFor="visitDoctor" className="form-label">
+        Doctor
+      </label>
+      <select
+        id="visitDoctor"
+        className="form-select mb-3"
+        onChange={(e) =>
+          setVisitData({
+            ...visitData,
+            doctor: {
+              doctorId: +e.target.value,
+            },
+          } as VisitObject)
+        }
+        required
+      >
+        <option value="" hidden>
+          - Select a Doctor -
+        </option>
+        {/* {isDoctorListLoading
             ? ""
             : doctorList.map((doctor) => {
                 if (
@@ -121,39 +124,42 @@ function VisitRegisterModal() {
                   </option>
                 );
               })} */}
-        </select>
-        <label className="form-label">Date</label>
-        <input
-          className="form-control mb-3"
-          type="datetime-local"
-          onChange={(e) =>
-            setVisitData({
-              ...visitData,
-              date: e.target.value,
-            } as VisitObject)
-          }
-          required
-        />
-        <label className="form-label">Reason</label>
-        <textarea
-          className="form-control mb-3"
-          maxLength={255}
-          required
-          onChange={(e) =>
-            setVisitData({
-              ...visitData,
-              reason: e.target.value,
-            } as VisitObject)
-          }
-        />
+      </select>
+      <label htmlFor="visitDate" className="form-label">
+        Date
+      </label>
+      <input
+        id="visitDate"
+        className="form-control mb-3"
+        type="datetime-local"
+        onChange={(e) =>
+          setVisitData({
+            ...visitData,
+            date: e.target.value,
+          } as VisitObject)
+        }
+        required
+      />
+      <label htmlFor="visitReason" className="form-label">
+        Reason
+      </label>
+      <textarea
+        id="visitReason"
+        className="form-control mb-3"
+        maxLength={255}
+        required
+        onChange={(e) =>
+          setVisitData({
+            ...visitData,
+            reason: e.target.value,
+          } as VisitObject)
+        }
+      />
+      <div className="d-grid gap-2">
         <Button type="submit">Submit</Button>
-      </form>
-    </Modal>
+      </div>
+    </form>
   );
 }
 
-VisitRegisterModal.defaultProps = {
-  onClick: null,
-};
-
-export default VisitRegisterModal;
+export default VisitRegisterForm;

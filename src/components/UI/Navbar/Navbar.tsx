@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import logo from "../../../assets/logo.svg";
 import Button from "../Button/Button";
 import "./Navbar.scss";
@@ -43,16 +44,32 @@ function Navbar() {
                 Contact
               </a>
             </li>
-            <li className="nav-item">
-              <Button id="login-btn-sm" modalTarget="#authModal" className="btn-secondary nav-link d-block d-lg-none">
-                Login | Register
-              </Button>
-            </li>
+            <div className="d-grid gap-2 d-block d-lg-none">
+              <li className="nav-item">
+                <Button modalTarget="#visitEndModal" className="btn-danger nav-link mx-auto w-100">
+                  End Visit
+                </Button>
+              </li>
+              <li className="nav-item">
+                <a href="visit/new" className="btn btn-primary text-white nav-link">
+                  Register New Visit
+                </a>
+              </li>
+              <li className="nav-item">
+                <Button id="login-btn-sm" modalTarget="#authModal" className="btn-secondary nav-link mx-auto w-100">
+                  Login | Register
+                </Button>
+              </li>
+            </div>
           </ul>
         </div>
         <span className="navbar-text justify-content-lg-end align-items-lg-baseline d-none d-lg-flex w-25 h-25">
-          <Button modalTarget="#visitEndModal">End Visit</Button>
-          <Button modalTarget="#visitRegisterModal">Register New Visit</Button>
+          <Button modalTarget="#visitEndModal" className="btn-danger">
+            End Visit
+          </Button>
+          <a href="visit/new" className="btn btn-primary text-white">
+            Register New Visit
+          </a>
           <Button id="login-btn-lg" modalTarget="#authModal" className="btn-secondary">
             Login | Register
           </Button>
