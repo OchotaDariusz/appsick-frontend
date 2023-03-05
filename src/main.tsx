@@ -38,6 +38,7 @@ const router = createBrowserRouter([
       },
       {
         path: "visit/new",
+        loader,
         element: <VisitRegisterPage />,
       },
       {

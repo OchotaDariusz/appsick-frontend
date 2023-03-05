@@ -24,24 +24,21 @@ function LoginForm() {
   const submitForm = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(formState);
-    const login = () => {
-      postLoginData({ email: "aaa@aaa", password: "aaa@aaa" })
-        .then((data) => {
-          console.log(`logged in, data: ${data}`);
-          console.log(data);
-        })
-        .catch((err) => console.error(err));
-    };
-    login();
+    postLoginData(formState)
+      .then((data) => {
+        console.log("Logged in");
+        console.log(data);
+      })
+      .catch((err) => console.error(err));
   };
 
   return (
     <form onSubmit={submitForm}>
-      <label htmlFor="email" className="form-label">
+      <label htmlFor="emailLogin" className="form-label">
         Email
       </label>
       <input
-        id="email"
+        id="emailLogin"
         name="email"
         className="form-control mb-3"
         type="email"
@@ -49,11 +46,11 @@ function LoginForm() {
         onChange={(e) => handleTextChange(e)}
         required
       />
-      <label htmlFor="password" className="form-label">
+      <label htmlFor="passwordLogin" className="form-label">
         Password
       </label>
       <input
-        id="password"
+        id="passwordLogin"
         name="password"
         className="form-control mb-3"
         type="password"

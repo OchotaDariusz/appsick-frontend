@@ -3,6 +3,7 @@ import Button from "../UI/Button/Button";
 import { RegisterRequest } from "../../general/types";
 import ACTION from "../../reducers/actions";
 import userRegFormReducer from "../../reducers/userRegFormReducer";
+import { postRegisterData } from "../../general/dataManager";
 
 const initialRegisterFormState: RegisterRequest = {
   email: "",
@@ -28,16 +29,21 @@ function RegisterForm() {
 
   const submitForm = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formState);
+    postRegisterData(formState)
+      .then((data) => {
+        console.log("Registered new user");
+        console.log(data);
+      })
+      .catch((err) => console.error(err));
   };
 
   return (
     <form onSubmit={submitForm}>
-      <label htmlFor="email" className="form-label">
+      <label htmlFor="emailRegister" className="form-label">
         Email
       </label>
       <input
-        id="email"
+        id="emailRegister"
         name="email"
         className="form-control mb-3"
         type="email"
@@ -45,11 +51,11 @@ function RegisterForm() {
         onChange={(e) => handleTextChange(e)}
         required
       />
-      <label htmlFor="password" className="form-label">
+      <label htmlFor="passwordRegister" className="form-label">
         Password
       </label>
       <input
-        id="password"
+        id="passwordRegister"
         name="password"
         className="form-control mb-3"
         type="password"
@@ -57,11 +63,11 @@ function RegisterForm() {
         onChange={(e) => handleTextChange(e)}
         required
       />
-      <label htmlFor="firstName" className="form-label">
+      <label htmlFor="firstNameRegister" className="form-label">
         First Name
       </label>
       <input
-        id="firstName"
+        id="firstNameRegister"
         name="firstName"
         className="form-control mb-3"
         type="text"
@@ -69,11 +75,11 @@ function RegisterForm() {
         onChange={(e) => handleTextChange(e)}
         required
       />
-      <label htmlFor="lastName" className="form-label">
+      <label htmlFor="lastNameRegister" className="form-label">
         Last Name
       </label>
       <input
-        id="lastName"
+        id="lastNameRegister"
         name="lastName"
         className="form-control mb-3"
         type="text"
@@ -81,11 +87,11 @@ function RegisterForm() {
         onChange={(e) => handleTextChange(e)}
         required
       />
-      <label htmlFor="birthDate" className="form-label">
+      <label htmlFor="birthDateRegister" className="form-label">
         Birth Date
       </label>
       <input
-        id="birthDate"
+        id="birthDateRegister"
         name="birthDate"
         className="form-control mb-3"
         type="date"
@@ -93,11 +99,11 @@ function RegisterForm() {
         onChange={(e) => handleTextChange(e)}
         required
       />
-      <label htmlFor="telephoneNumber" className="form-label">
+      <label htmlFor="telephoneNumberRegister" className="form-label">
         Telephone Number
       </label>
       <input
-        id="telephoneNumber"
+        id="telephoneNumberRegister"
         name="telephoneNumber"
         className="form-control mb-3"
         type="text"
@@ -105,11 +111,11 @@ function RegisterForm() {
         onChange={(e) => handleTextChange(e)}
         required
       />
-      <label htmlFor="pesel" className="form-label">
+      <label htmlFor="peselRegister" className="form-label">
         Pesel
       </label>
       <input
-        id="pesel"
+        id="peselRegister"
         name="pesel"
         className="form-control mb-3"
         type="text"
@@ -122,11 +128,11 @@ function RegisterForm() {
           className="form-check-input"
           type="radio"
           name="sex"
-          id="female"
+          id="femaleRegister"
           value="FEMALE"
           onChange={(e) => handleTextChange(e)}
         />
-        <label htmlFor="female" className="form-check-label">
+        <label htmlFor="femaleRegister" className="form-check-label">
           Female
         </label>
       </div>
@@ -135,12 +141,12 @@ function RegisterForm() {
           className="form-check-input"
           type="radio"
           name="sex"
-          id="male"
+          id="maleRegister"
           value="MALE"
           onChange={(e) => handleTextChange(e)}
           checked
         />
-        <label htmlFor="male" className="form-check-label">
+        <label htmlFor="maleRegister" className="form-check-label">
           Male
         </label>
       </div>

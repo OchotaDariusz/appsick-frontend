@@ -78,16 +78,6 @@ export const postNewVisit = async (body: VisitObject) => {
   }
 };
 
-export const postNewUser = async (body: RegisterRequest) => {
-  try {
-    return await postData("/visit", body);
-  } catch {
-    return {
-      errorMessage: "Cannot create new user.",
-    };
-  }
-};
-
 export const postVisitChatMessages = async (body: ChatMessageDTO[]) => {
   try {
     return await postData("/chats", body);
