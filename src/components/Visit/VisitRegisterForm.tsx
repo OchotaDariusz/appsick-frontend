@@ -1,8 +1,16 @@
-import React, { useState, useReducer, useRef } from "react";
+import React, { useState, useReducer, useRef, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import ApiCalendar from "react-google-calendar-api";
-import { postNewVisit } from "../../general/dataManager";
-import { DoctorObject, DoctorSpeciality, VisitEvent, VisitObject, VisitRegisterRequest } from "../../general/types";
+import { getDoctorById, postNewVisit } from "../../general/dataManager";
+import {
+  Doctor,
+  DoctorObject,
+  DoctorSpeciality,
+  ErrorMessage,
+  VisitEvent,
+  VisitObject,
+  VisitRegisterRequest,
+} from "../../general/types";
 import useGetDoctorsBySpeciality from "../../hooks/useGetDoctorsBySpeciality";
 import useGetDoctorSpecialities from "../../hooks/useGetDoctorSpecialities";
 import { handleTextChange, handleNumberChange } from "../../reducers/actions";
@@ -46,6 +54,18 @@ function VisitRegisterForm({ apiCalendar }: Props) {
   const [doctorSpecialities, setDoctorSpecialities] = useState<DoctorSpeciality[]>([]);
   const [availableDoctors, setAvailableDoctors] = useState<DoctorObject[]>([]);
   const authState = useAppSelector(selectAuth);
+  const [doctorEmail, setDoctorEmail] = useState("");
+
+  const doctorId = useMemo(() => (formState as VisitRegisterRequest).doctorId, [formState]);
+
+  useEffect(() => {
+    if ((formState as VisitRegisterRequest).doctorId !== 0) {
+      getDoctorById(doctorId as number).then((doctor: DoctorObject | ErrorMessage) => {
+        console.log(doctor);
+        setDoctorEmail((doctor as Doctor).user?.email as string);
+      });
+    }
+  }, [doctorId, formState]);
 
   useGetDoctorSpecialities(setDoctorSpecialities);
   selectedSpeciality = useGetDoctorsBySpeciality(setAvailableDoctors, selectedSpeciality, [
@@ -82,7 +102,7 @@ function VisitRegisterForm({ apiCalendar }: Props) {
             dateTime: new Date(eventDate.getTime() + 3600000).toISOString(),
             timeZone: "Europe/Warsaw",
           },
-          attendees: [{ email: authState.email }],
+          attendees: [{ email: doctorEmail }],
           reminders: {
             useDefault: false,
             overrides: [

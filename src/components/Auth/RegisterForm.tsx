@@ -1,15 +1,18 @@
 import React, { useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../UI/Button/Button";
-import { RegisterRequest } from "../../general/types";
-import { handleTextChange } from "../../reducers/actions";
-import userRegFormReducer from "../../reducers/userRegFormReducer";
 import { postRegisterData } from "../../general/dataManager";
 import { closeModal } from "../../general/utils";
+import { RegisterRequest } from "../../general/types";
+import useValidateFormPassword from "../../hooks/useValidateFormPassword";
+import { handleTextChange } from "../../reducers/actions";
+import userRegFormReducer from "../../reducers/userRegFormReducer";
+import useValidateFormEmail from "../../hooks/useValidateFormEmail";
 
 const initialRegisterFormState: RegisterRequest = {
   email: "",
   password: "",
+  passwordConfirm: "",
   firstName: "",
   lastName: "",
   birthDate: "",
@@ -20,6 +23,11 @@ const initialRegisterFormState: RegisterRequest = {
 
 function RegisterForm() {
   const [formState, dispatch] = useReducer(userRegFormReducer, initialRegisterFormState);
+  const emailColor = useValidateFormEmail(formState.email);
+  const [passwordConfirmColor, isFormValid] = useValidateFormPassword(
+    formState.password,
+    formState.passwordConfirm as string
+  );
   const navigate = useNavigate();
 
   const textChangeHandler = () => {
@@ -28,7 +36,9 @@ function RegisterForm() {
 
   const submitForm = (e: React.FormEvent) => {
     e.preventDefault();
-    postRegisterData(formState)
+    const registerData = { ...formState };
+    delete registerData.passwordConfirm;
+    postRegisterData(registerData)
       .then((data) => {
         console.log("Registered new user");
         console.log(data);
@@ -51,6 +61,7 @@ function RegisterForm() {
         value={formState.email}
         onChange={textChangeHandler()}
         required
+        style={{ border: `3px solid ${emailColor as string}` }}
       />
       <label htmlFor="passwordRegister" className="form-label">
         Password
@@ -63,6 +74,20 @@ function RegisterForm() {
         value={formState.password}
         onChange={textChangeHandler()}
         required
+        style={{ border: `3px solid ${passwordConfirmColor as string}` }}
+      />
+      <label htmlFor="passwordRegisterConfirm" className="form-label">
+        Password confirm
+      </label>
+      <input
+        id="passwordRegisterConfirm"
+        name="passwordConfirm"
+        className="form-control mb-3"
+        type="password"
+        value={formState.passwordConfirm}
+        onChange={textChangeHandler()}
+        required
+        style={{ border: `3px solid ${passwordConfirmColor as string}` }}
       />
       <label htmlFor="firstNameRegister" className="form-label">
         First Name
@@ -152,7 +177,9 @@ function RegisterForm() {
         </label>
       </div>
       <div className="d-grid gap-2">
-        <Button type="submit">Submit</Button>
+        <Button className={isFormValid && emailColor === "green" ? "" : "disabled"} type="submit">
+          Submit
+        </Button>
       </div>
     </form>
   );

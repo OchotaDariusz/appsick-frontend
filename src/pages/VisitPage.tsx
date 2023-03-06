@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useReducer, useRef } from "react";
+import React, { useCallback, useEffect, useReducer, useRef } from "react";
 import ReactDOM from "react-dom";
 import { useLoaderData, useNavigate, redirect, LoaderFunctionArgs } from "react-router-dom";
 import { ChatMessageDTO, ErrorMessage, UserDetails, Visit, VisitObject } from "../general/types";
@@ -40,15 +40,21 @@ function VisitPage() {
   const [visitState, dispatch] = useReducer(visitStateReducer, visitPageInitialState);
   const isDomReady = useDomReady();
 
-  const visitStateChangeHandler = (field: string, value: any) => {
-    handleVisitStateChange(dispatch, field, value);
-  };
+  const visitStateChangeHandler = useCallback(
+    (field: string, value: any) => {
+      handleVisitStateChange(dispatch, field, value);
+    },
+    [dispatch]
+  );
 
-  const setChatMessages = (chatMessages: ChatMessageDTO[]) => {
-    visitStateChangeHandler("chatMessages", chatMessages);
-  };
+  const setChatMessages = useCallback(
+    (chatMessages: ChatMessageDTO[]) => {
+      visitStateChangeHandler("chatMessages", chatMessages);
+    },
+    [visitStateChangeHandler]
+  );
 
-  const updateChat = () => {
+  const updateChat = useCallback(() => {
     messages = [];
     chatroom
       .getChats(
@@ -61,7 +67,7 @@ function VisitPage() {
       .then(() => {
         setChatMessages(messages);
       });
-  };
+  }, [setChatMessages, visitState.chatMessages]);
 
   // const sendMessage = (event: React.FormEvent<HTMLFormElement>) => {
   //   event.preventDefault();
@@ -99,8 +105,10 @@ function VisitPage() {
       visitStateChangeHandler("visitReason", (visit as Visit).reason);
     });
     chatroom = new Chatroom(visitId, authState.id, `${authState.firstName} ${authState.lastName}`);
+    console.log("chat initied");
     updateChat();
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>

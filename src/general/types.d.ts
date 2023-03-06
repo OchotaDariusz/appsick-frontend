@@ -36,6 +36,7 @@ export interface LoginRequest {
 export interface RegisterRequest {
   email: string;
   password: string;
+  passwordConfirm?: string;
   firstName: string;
   lastName: string;
   birthDate: DateObject;
