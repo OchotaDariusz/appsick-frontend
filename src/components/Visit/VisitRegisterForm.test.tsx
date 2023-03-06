@@ -1,17 +1,21 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
 import { describe, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 
 import VisitRegisterForm from "./VisitRegisterForm";
+import store from "../../reducers/store";
 
 describe("VisitRegisterForm", () => {
   it("Renders Visit Register Form", () => {
     // ARRANGE
     render(
-      <BrowserRouter>
-        <VisitRegisterForm />
-      </BrowserRouter>
+      <Provider store={store}>
+        <BrowserRouter>
+          <VisitRegisterForm />
+        </BrowserRouter>
+      </Provider>
     );
     // ACT
     // EXPECT
@@ -20,9 +24,11 @@ describe("VisitRegisterForm", () => {
   it("Renders Visit Register Form buttons", () => {
     // ARRANGE
     render(
-      <BrowserRouter>
-        <VisitRegisterForm />
-      </BrowserRouter>
+      <Provider store={store}>
+        <BrowserRouter>
+          <VisitRegisterForm />
+        </BrowserRouter>
+      </Provider>
     );
     // ACT
     // EXPECT

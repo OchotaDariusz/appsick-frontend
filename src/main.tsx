@@ -7,7 +7,7 @@ import store from "./reducers/store";
 import App from "./App";
 import ErrorPage from "./pages/ErrorPage";
 import AllVisitsPage from "./pages/AllVisitsPage";
-import VisitPage from "./pages/VisitPage";
+import VisitPage, { visitsLoader } from "./pages/VisitPage";
 import VisitChatHistoryPage from "./pages/VisitChatHistoryPage";
 import VisitRegisterPage from "./pages/VisitRegisterPage";
 import PatientVisitsHistoryPage from "./pages/PatientVisitsHistoryPage";
@@ -30,7 +30,7 @@ const router = createBrowserRouter([
       },
       {
         path: "visit/:visitId",
-        loader,
+        loader: visitsLoader,
         element: <VisitPage />,
       },
       {

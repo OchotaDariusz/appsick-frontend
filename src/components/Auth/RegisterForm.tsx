@@ -22,8 +22,8 @@ function RegisterForm() {
   const [formState, dispatch] = useReducer(userRegFormReducer, initialRegisterFormState);
   const navigate = useNavigate();
 
-  const textChangeHandler = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    handleTextChange(dispatch, e);
+  const textChangeHandler = () => {
+    return (e: React.FormEvent<HTMLInputElement | HTMLSelectElement>) => handleTextChange(dispatch, e);
   };
 
   const submitForm = (e: React.FormEvent) => {
@@ -49,7 +49,7 @@ function RegisterForm() {
         className="form-control mb-3"
         type="email"
         value={formState.email}
-        onChange={(e) => textChangeHandler(e)}
+        onChange={textChangeHandler()}
         required
       />
       <label htmlFor="passwordRegister" className="form-label">
@@ -61,7 +61,7 @@ function RegisterForm() {
         className="form-control mb-3"
         type="password"
         value={formState.password}
-        onChange={(e) => textChangeHandler(e)}
+        onChange={textChangeHandler()}
         required
       />
       <label htmlFor="firstNameRegister" className="form-label">
@@ -73,7 +73,7 @@ function RegisterForm() {
         className="form-control mb-3"
         type="text"
         value={formState.firstName}
-        onChange={(e) => textChangeHandler(e)}
+        onChange={textChangeHandler()}
         required
       />
       <label htmlFor="lastNameRegister" className="form-label">
@@ -85,7 +85,7 @@ function RegisterForm() {
         className="form-control mb-3"
         type="text"
         value={formState.lastName}
-        onChange={(e) => textChangeHandler(e)}
+        onChange={textChangeHandler()}
         required
       />
       <label htmlFor="birthDateRegister" className="form-label">
@@ -97,7 +97,7 @@ function RegisterForm() {
         className="form-control mb-3"
         type="date"
         value={formState.birthDate as string}
-        onChange={(e) => textChangeHandler(e)}
+        onChange={textChangeHandler()}
         required
       />
       <label htmlFor="telephoneNumberRegister" className="form-label">
@@ -109,7 +109,7 @@ function RegisterForm() {
         className="form-control mb-3"
         type="text"
         value={formState.telephoneNumber}
-        onChange={(e) => textChangeHandler(e)}
+        onChange={textChangeHandler()}
         required
       />
       <label htmlFor="peselRegister" className="form-label">
@@ -121,7 +121,7 @@ function RegisterForm() {
         className="form-control mb-3"
         type="text"
         value={formState.pesel}
-        onChange={(e) => textChangeHandler(e)}
+        onChange={textChangeHandler()}
         required
       />
       <div className="form-check">
@@ -131,7 +131,7 @@ function RegisterForm() {
           name="sex"
           id="femaleRegister"
           value="FEMALE"
-          onChange={(e) => textChangeHandler(e)}
+          onChange={textChangeHandler()}
         />
         <label htmlFor="femaleRegister" className="form-check-label">
           Female
@@ -144,7 +144,7 @@ function RegisterForm() {
           name="sex"
           id="maleRegister"
           value="MALE"
-          onChange={(e) => textChangeHandler(e)}
+          onChange={textChangeHandler()}
           checked
         />
         <label htmlFor="maleRegister" className="form-check-label">

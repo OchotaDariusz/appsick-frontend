@@ -4,6 +4,7 @@ enum ACTION {
   GET_TEXT,
   GET_NUMBER,
   GET_DATE,
+  GET_VALUE,
   AUTH,
 }
 
@@ -23,12 +24,20 @@ export const handleTextChange = (
 
 export const handleNumberChange = (
   dispatch: React.Dispatch<ReducerAction<FormEventHandler> | any>,
-  e: React.FormEvent<HTMLSelectElement>
+  e: React.FormEvent<HTMLInputElement | HTMLSelectElement>
 ) => {
   dispatch({
     type: ACTION.GET_NUMBER,
     field: (e.target as HTMLSelectElement).name,
     payload: (e.target as HTMLSelectElement).value,
+  });
+};
+
+export const handleVisitStateChange = (dispatch: any, field: string, value: any) => {
+  dispatch({
+    type: ACTION.GET_VALUE,
+    field,
+    payload: value,
   });
 };
 /* eslint-enable @typescript-eslint/no-explicit-any */

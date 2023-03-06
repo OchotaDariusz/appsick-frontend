@@ -21,7 +21,7 @@ initializeApp(firebaseConfig);
 
 const db = getFirestore();
 
-type ChatMessageSetterFn = (prevValue: ChatMessageObject[] | DocumentData) => ChatMessageObject[];
+type ChatMessageSetterFn = (chatMessages: ChatMessageDTO[]) => void;
 
 class Chatroom {
   private readonly visitId: number;
@@ -54,14 +54,15 @@ class Chatroom {
 
   async getChats(
     callback: (chatMessage: ChatMessageObject | DocumentData) => void,
-    setChatMessages: ChatMessageSetterFn
+    setChatMessages: ChatMessageSetterFn,
+    chatMessages: ChatMessageDTO[]
   ) {
     if (typeof this.unsub === "function") this.unsub();
     const queryResults = query(this.chatMessages, where("visitId", "==", this.visitId), orderBy("date"));
     this.unsub = onSnapshot(queryResults, (snapshot) => {
       snapshot.docChanges().forEach((change) => {
         if (change.type === "added") {
-          setChatMessages((prevMessages: ChatMessageObject[]) => [...prevMessages, change.doc.data()]);
+          setChatMessages([...chatMessages, change.doc.data() as ChatMessageDTO]);
         }
       });
     });
@@ -71,7 +72,7 @@ class Chatroom {
     });
   }
 
-  async endVisit(setChatMessages: ChatMessageSetterFn) {
+  async endVisit() {
     const user: UserDetails | string | ErrorMessage = await getUser();
     if ("id" in (user as UserDetails) && (user as UserDetails).role === "PATIENT") {
       return;
@@ -95,7 +96,6 @@ class Chatroom {
               const docRef = doc(db, "appsick-visits", idToRemove);
               deleteDoc(docRef);
             });
-            setChatMessages([]);
           })
           .catch((err) => console.error(err.message));
       })

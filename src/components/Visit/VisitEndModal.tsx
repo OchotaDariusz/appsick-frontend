@@ -1,15 +1,17 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState, useRef } from "react";
+import React, { useReducer, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { postPatientMedicalData } from "../../general/dataManager";
-import { MedicalDataObject } from "../../general/types";
+import { MedicalData, MedicalDataObject } from "../../general/types";
 import { closeModal } from "../../general/utils";
+import { useAppSelector } from "../../hooks/useAppDispatch";
+import { handleNumberChange, handleTextChange } from "../../reducers/actions";
+import { selectAuth } from "../../reducers/store";
+import visitFormReducer from "../../reducers/visitFormReducer";
 import Button from "../UI/Button/Button";
 import Modal from "../UI/Modal/Modal";
 
-const visitId = 1;
-const userId = 1;
-const medicalDataTemplate = {
+const medicalDataTemplate: MedicalData = {
   medicalDataId: null,
   weight: 0,
   height: 0,
@@ -20,17 +22,29 @@ const medicalDataTemplate = {
   recommendations: "",
 };
 
-function VisitEndModal() {
+type Props = {
+  visitId: number;
+};
+
+function VisitEndModal({ visitId }: Props) {
+  const authState = useAppSelector(selectAuth);
   const formRef = useRef<HTMLFormElement>(null);
-  const [medicalData, setMedicalData] = useState<MedicalDataObject>(medicalDataTemplate);
+  const [medicalData, dispatch] = useReducer(visitFormReducer, medicalDataTemplate);
   const navigate = useNavigate();
+
+  const textChangeHandler = () => {
+    return (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => handleTextChange(dispatch, e);
+  };
+  const numberChangeHandler = () => {
+    return (e: React.FormEvent<HTMLInputElement>) => handleNumberChange(dispatch, e);
+  };
 
   const submitForm = (event: React.FormEvent) => {
     event.preventDefault();
 
     postPatientMedicalData({
       ...medicalData,
-      userId,
+      userId: authState.id,
       visitId,
     } as MedicalDataObject)
       .then(() => {
@@ -52,13 +66,10 @@ function VisitEndModal() {
           step="1"
           min="0"
           max="500"
+          name="weight"
+          value={(medicalData as MedicalData).weight}
           required
-          onChange={(e) =>
-            setMedicalData({
-              ...medicalData,
-              weight: +e.target.value,
-            } as MedicalDataObject)
-          }
+          onChange={numberChangeHandler()}
         />
         <label className="form-label">Height</label>
         <input
@@ -67,13 +78,10 @@ function VisitEndModal() {
           step="1"
           min="0"
           max="500"
+          name="height"
+          value={(medicalData as MedicalData).height}
           required
-          onChange={(e) =>
-            setMedicalData({
-              ...medicalData,
-              height: +e.target.value,
-            } as MedicalDataObject)
-          }
+          onChange={numberChangeHandler()}
         />
         <label className="form-label">Medical Conditions</label>
         <input
@@ -81,12 +89,9 @@ function VisitEndModal() {
           type="text"
           maxLength={255}
           required
-          onChange={(e) =>
-            setMedicalData({
-              ...medicalData,
-              medicalConditions: e.target.value,
-            } as MedicalDataObject)
-          }
+          name="medicalConditions"
+          value={(medicalData as MedicalData).medicalConditions}
+          onChange={textChangeHandler()}
         />
         <label className="form-label">Allergies</label>
         <input
@@ -94,12 +99,9 @@ function VisitEndModal() {
           type="text"
           maxLength={255}
           required
-          onChange={(e) =>
-            setMedicalData({
-              ...medicalData,
-              allergies: e.target.value,
-            } as MedicalDataObject)
-          }
+          name="allergies"
+          value={(medicalData as MedicalData).allergies}
+          onChange={textChangeHandler()}
         />
         <label className="form-label">Addictions</label>
         <input
@@ -107,12 +109,9 @@ function VisitEndModal() {
           type="text"
           maxLength={255}
           required
-          onChange={(e) =>
-            setMedicalData({
-              ...medicalData,
-              addictions: e.target.value,
-            } as MedicalDataObject)
-          }
+          name="addictions"
+          value={(medicalData as MedicalData).addictions}
+          onChange={textChangeHandler()}
         />
         <label className="form-label">Medicaments</label>
         <input
@@ -120,33 +119,23 @@ function VisitEndModal() {
           type="text"
           maxLength={255}
           required
-          onChange={(e) =>
-            setMedicalData({
-              ...medicalData,
-              medicaments: e.target.value,
-            } as MedicalDataObject)
-          }
+          name="medicaments"
+          value={(medicalData as MedicalData).medicaments}
+          onChange={textChangeHandler()}
         />
         <label className="form-label">Recommendations</label>
         <textarea
           className="form-control mb-3"
           maxLength={255}
           required
-          onChange={(e) =>
-            setMedicalData({
-              ...medicalData,
-              recommendations: e.target.value,
-            } as MedicalDataObject)
-          }
+          name="recommendations"
+          value={(medicalData as MedicalData).recommendations}
+          onChange={textChangeHandler()}
         />
         <Button type="submit">Submit</Button>
       </form>
     </Modal>
   );
 }
-
-VisitEndModal.defaultProps = {
-  onClick: null,
-};
 
 export default VisitEndModal;

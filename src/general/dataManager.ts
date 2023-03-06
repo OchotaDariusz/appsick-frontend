@@ -120,6 +120,17 @@ export const getUser = async (): Promise<UserDetails | string | ErrorMessage> =>
   }
 };
 
+export const getVisitById = async (visitId: number): Promise<VisitObject | ErrorMessage> => {
+  const errorMessage = {
+    errorMessage: "Cannot fetch visit details.",
+  };
+  try {
+    return await (getData(`/visit/${visitId}`) as Promise<VisitObject>);
+  } catch {
+    return errorMessage;
+  }
+};
+
 export const getPatient = async (): Promise<PatientObject | ErrorMessage> => {
   const errorMessage = {
     errorMessage: "Cannot fetch patient details for current authenticated user.",
@@ -267,6 +278,16 @@ export const getDoctorSpecialities = async (): Promise<DoctorSpeciality[] | Erro
   } catch {
     return {
       errorMessage: "Cannot fetch doctor specialities data.",
+    };
+  }
+};
+
+export const setStatusVisit = async (visitId: number | string) => {
+  try {
+    return await axiosInstance.put(`/visit/status/${visitId}`, "COMPLETED");
+  } catch {
+    return {
+      errorMessage: "Cannot put data.",
     };
   }
 };

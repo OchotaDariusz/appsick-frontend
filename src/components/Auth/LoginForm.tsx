@@ -6,8 +6,8 @@ import { closeModal, mapDataToAuthObject } from "../../general/utils";
 import { handleTextChange } from "../../reducers/actions";
 import userLoginFormReducer from "../../reducers/userLoginFormReducer";
 import { getPatient, getUser, postLoginData } from "../../general/dataManager";
-import { selectAuth, login } from "../../reducers/store";
-import { useAppDispatch, useAppSelector } from "../../hooks/useAppDispatch";
+import { login } from "../../reducers/store";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
 
 const initialLoginFormState: LoginRequest = {
   email: "",
@@ -16,7 +16,6 @@ const initialLoginFormState: LoginRequest = {
 
 function LoginForm() {
   const [formState, dispatch] = useReducer(userLoginFormReducer, initialLoginFormState);
-  const authState = useAppSelector(selectAuth);
   const authDispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -26,15 +25,12 @@ function LoginForm() {
     navigate("/");
   };
 
-  const textChangeHandler = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    handleTextChange(dispatch, e);
+  const textChangeHandler = () => {
+    return (e: React.FormEvent<HTMLInputElement>) => handleTextChange(dispatch, e);
   };
-
-  console.log(authState);
 
   const submitForm = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formState);
     postLoginData(formState)
       .then(() => {
         console.log("Logged in");
@@ -71,7 +67,7 @@ function LoginForm() {
         className="form-control mb-3"
         type="email"
         value={formState.email}
-        onChange={(e) => textChangeHandler(e)}
+        onChange={textChangeHandler()}
         required
       />
       <label htmlFor="passwordLogin" className="form-label">
@@ -83,7 +79,7 @@ function LoginForm() {
         className="form-control mb-3"
         type="password"
         value={formState.password}
-        onChange={(e) => textChangeHandler(e)}
+        onChange={textChangeHandler()}
         required
       />
       <div className="d-grid gap-2">

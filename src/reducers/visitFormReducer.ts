@@ -1,4 +1,4 @@
-import { VisitRegisterRequest } from "../general/types";
+import { MedicalData, VisitRegisterRequest } from "../general/types";
 import ACTION from "./actions";
 
 interface FormAction {
@@ -7,7 +7,7 @@ interface FormAction {
   payload: string | number;
 }
 
-const visitRegFormReducer = (state: VisitRegisterRequest, action: FormAction) => {
+const visitFormReducer = (state: VisitRegisterRequest | MedicalData, action: FormAction) => {
   switch (action.type) {
     case ACTION.GET_TEXT:
       return {
@@ -24,4 +24,4 @@ const visitRegFormReducer = (state: VisitRegisterRequest, action: FormAction) =>
   }
 };
 
-export default visitRegFormReducer;
+export default visitFormReducer;
