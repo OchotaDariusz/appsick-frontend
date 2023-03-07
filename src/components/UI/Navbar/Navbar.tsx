@@ -50,7 +50,7 @@ function Navbar() {
                 </Button>
               </li>
               <li className="nav-item">
-                <a href="/visit/new" className="btn btn-primary text-white nav-link bg-gradient">
+                <a href="/visit/new" className="btn rounded-pill btn-primary text-white nav-link bg-gradient">
                   Register New Visit
                 </a>
               </li>
@@ -70,7 +70,7 @@ function Navbar() {
           <Button modalTarget="#visitEndModal" className="btn-danger bg-gradient shadow-sm">
             End Visit
           </Button>
-          <a href="/visit/new" className="btn btn-primary text-white bg-gradient shadow-sm">
+          <a href="/visit/new" className="btn rounded-pill btn-primary text-white bg-gradient shadow-sm">
             Register New Visit
           </a>
           <Button id="login-btn-lg" modalTarget="#authModal" className="btn-secondary bg-gradient shadow-sm">

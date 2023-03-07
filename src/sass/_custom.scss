@@ -11,6 +11,4 @@ $theme-colors: (
   "dark": $color-dark,
 );
 
-$btn-border-radius: 50vh;
-
-@import "node_modules/bootstrap/scss/bootstrap";
+@import "~bootstrap/scss/bootstrap";

@@ -14,7 +14,7 @@ import PatientVisitsHistoryPage from "./pages/PatientVisitsHistoryPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import AboutUsPage from "./pages/AboutUsPage";
 import ContactPage from "./pages/ContactPage";
-import "bootstrap/dist/js/bootstrap.bundle";
+import "bootstrap/js/dist/modal";
 import "./index.scss";
 
 const router = createBrowserRouter([

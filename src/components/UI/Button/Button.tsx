@@ -1,5 +1,4 @@
 import React, { MouseEventHandler } from "react";
-import "./Button.scss";
 
 type Props = {
   id?: string | undefined;
@@ -20,7 +19,7 @@ function Button({ id, className, children, type, onClick, darkMode, modalTarget 
     return (
       <button
         id={id}
-        className={`btn text-white mx-1 ${btnColor}${classes}`}
+        className={`btn rounded-pill text-white mx-1 ${btnColor}${classes}`}
         type={type}
         onClick={onClick}
         data-bs-toggle="modal"
@@ -31,7 +30,7 @@ function Button({ id, className, children, type, onClick, darkMode, modalTarget 
     );
   }
   return (
-    <button id={id} className={`btn text-white mx-1 ${btnColor}${classes}`} type={type} onClick={onClick}>
+    <button id={id} className={`btn rounded-pill text-white mx-1 ${btnColor}${classes}`} type={type} onClick={onClick}>
       {children}
     </button>
     /* eslint-enable react/button-has-type */
