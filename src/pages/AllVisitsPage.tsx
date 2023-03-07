@@ -1,26 +1,76 @@
 import React, { useEffect, useState } from "react";
-import Card from "../components/UI/Card/Card";
-import VisitItem from "../components/Visit/VisitItem";
+import VisitsListHistory from "../components/Visit/VisitsListHistory";
+import VisitsListIncoming from "../components/Visit/VisitsListIncoming";
+import VisitsListToday from "../components/Visit/VisitsListToday";
+import { getPatientVisitsForToday, getPatientVisitsFromPast, getPatientVisitsInFuture } from "../general/dataManager";
 import { Visit } from "../general/types";
-import { formatVisitDate } from "../general/utils";
-import visitList from "../mocks/dummyVisit";
+import { formatVisitDate, isToday } from "../general/utils";
+import useDetectPageBottom from "../hooks/useDetectPageBottom";
+// import visitList from "../mocks/dummyVisit";
 
+// const page = 1;
 function AllVisitsPage() {
-  const [visits, setVisits] = useState<Visit[]>([]);
+  // const [visits, setVisits] = useState<Visit[]>([]);
+  const [todayVisits, setTodayVisits] = useState<Visit[]>([]);
+  const [futureVisits, setFutureVisits] = useState<Visit[]>([]);
+  const [pastVisits, setPastVisits] = useState<Visit[]>([]);
+  const reachedBottom = useDetectPageBottom();
+  const [pageNumber, setPageNumber] = useState(1);
+  console.log("reachedBottom", reachedBottom);
+  console.log("pageNumber", pageNumber);
+
+  // eslint-disable-next-line consistent-return
   useEffect(() => {
-    const visitsToSet = visitList.map((visit) => formatVisitDate(visit) as Visit);
-    setVisits(visitsToSet);
-  }, [setVisits]);
+    if (pastVisits.length > 0) {
+      const nextPageDelay = setTimeout(() => {
+        setPageNumber((prev) => prev + 1);
+      });
+      return () => clearTimeout(nextPageDelay);
+    }
+  }, [pastVisits.length, reachedBottom]);
+
+  // useEffect(() => {
+  //   const visitsToSet = visitList.map((visit) => formatVisitDate(visit) as Visit);
+  //   setVisits(visitsToSet);
+  // }, [setVisits]);
+
+  useEffect(() => {
+    getPatientVisitsForToday()
+      .then((visitsForToday) => {
+        const filtered = (visitsForToday as Visit[]).filter(
+          (todayVisit) => todayVisit.status === "PENDING" && isToday(todayVisit)
+        );
+        setTodayVisits(filtered.map(formatVisitDate) as Visit[]);
+      })
+      .catch((err) => console.warn(err.message));
+  }, []);
+
+  useEffect(() => {
+    getPatientVisitsInFuture()
+      .then((visitsIncoming) => {
+        const filtered = (visitsIncoming as Visit[]).filter((incomingVisit) => !isToday(incomingVisit));
+        setFutureVisits(filtered.map(formatVisitDate) as Visit[]);
+      })
+      .catch((err) => console.warn(err.message));
+  }, []);
+
+  useEffect(() => {
+    getPatientVisitsFromPast(pageNumber)
+      .then((visitsFromPast) => {
+        if (pastVisits.length === 0) {
+          setPastVisits((visitsFromPast as Visit[]).map(formatVisitDate) as Visit[]);
+        } else {
+          setPastVisits((prevVisits) => {
+            return [...(prevVisits as Visit[]), ...((visitsFromPast as Visit[]).map(formatVisitDate) as Visit[])];
+          });
+        }
+      })
+      .catch((err) => console.warn(err.message));
+  }, [pageNumber, pastVisits.length]);
 
   return (
     <>
-      <Card className="shadow border-0 my-5">
-        <div className="text-center fs-2 fw-bold lead">Today</div>
-        <hr />
-        {visits.map((visit) => (
-          <VisitItem key={visit.visitId} visit={visit} />
-        ))}
-      </Card>
+      <VisitsListToday visits={todayVisits} />
 
       <nav className="d-flex justify-content-center align-items-center">
         <div className="nav nav-tabs nav-fill" id="nav-visits-tab" role="tablist">
@@ -60,23 +110,11 @@ function AllVisitsPage() {
           role="tabpanel"
           aria-labelledby="future-visits-tab"
         >
-          <Card className="shadow-sm border-0 my-5">
-            <div className="text-center fs-3 fw-bold lead text-muted">Incoming</div>
-            <hr />
-            {visits.map((visit) => (
-              <VisitItem key={(visit.visitId as number) * 50} visit={visit} />
-            ))}
-          </Card>
+          <VisitsListIncoming visits={futureVisits} />
         </div>
 
         <div className="tab-pane fade p-3" id="history-visits" role="tabpanel" aria-labelledby="history-visits-tab">
-          <Card className="shadow-sm border-0 my-5">
-            <div className="text-center fs-3 fw-bold lead text-muted">History</div>
-            <hr />
-            {visits.map((visit) => (
-              <VisitItem key={(visit.visitId as number) * 5} visit={visit} />
-            ))}
-          </Card>
+          <VisitsListHistory visits={pastVisits} />
         </div>
       </div>
     </>

@@ -80,7 +80,6 @@ function VisitItem({ visit }: Props) {
                     <h6>Clinic</h6>
                     <p>{(visit as Visit).clinic?.clinicName ?? "clinicName"}</p>
                   </div>
-                  )
                 </Card>
               </div>
             </div>

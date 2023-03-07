@@ -202,7 +202,10 @@ export const getPatientVisitsForToday = async (): Promise<VisitObject[] | ErrorM
 
 export const getPatientVisitsFromPast = async (pageNumber?: number): Promise<VisitObject[] | ErrorMessage> => {
   try {
-    return await getPatientVisits("/past", pageNumber);
+    let page: number;
+    if (pageNumber === undefined) page = 1;
+    else page = pageNumber;
+    return await getPatientVisits("/past", page);
   } catch {
     return {
       errorMessage: "Cannot fetch past patient visits.",
