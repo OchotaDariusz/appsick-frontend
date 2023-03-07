@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { ChatMessage, VisitPageState } from "../../general/types";
 import { useAppSelector } from "../../hooks/useAppDispatch";
 import { selectAuth } from "../../reducers/store";
@@ -9,26 +9,34 @@ import Card from "../UI/Card/Card";
 
 type Props = {
   visitState: VisitPageState;
-  sendMessage: (
+  sendMessage?: (
     event: React.FormEvent<HTMLFormElement>,
     formRef: React.MutableRefObject<HTMLFormElement | null>
   ) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  visitStateChangeHandler: (field: string, value: any) => void;
+  visitStateChangeHandler?: (field: string, value: any) => void;
 };
 
 function VisitChat({ visitState, sendMessage, visitStateChangeHandler }: Props) {
   const authState = useAppSelector(selectAuth);
   const formRef = useRef(null);
 
+  // eslint-disable-next-line consistent-return
   const setChatMessage = () => {
-    return (e: React.FormEvent<HTMLInputElement>) =>
-      visitStateChangeHandler((e.target as HTMLInputElement).name, (e.target as HTMLInputElement).value);
+    if (typeof visitStateChangeHandler === "function") {
+      return (e: React.FormEvent<HTMLInputElement>) =>
+        visitStateChangeHandler((e.target as HTMLInputElement).name, (e.target as HTMLInputElement).value);
+    }
   };
 
+  // eslint-disable-next-line consistent-return
   const sendChatMessage = () => {
-    return (e: React.FormEvent<HTMLFormElement>) => sendMessage(e, formRef);
+    if (typeof sendMessage === "function") {
+      return (e: React.FormEvent<HTMLFormElement>) => sendMessage(e, formRef);
+    }
   };
+
+  useEffect(() => console.log(visitState), [visitState]);
 
   return (
     <div className="container m-auto">
@@ -66,7 +74,7 @@ function VisitChat({ visitState, sendMessage, visitStateChangeHandler }: Props) 
           )}
         </div>
         <div className="col-12 col-lg-10">
-          <div className="mx-auto rounded-4 bg-dark text-dark bg-opacity-10 shadow mt-3">
+          <Card className="mx-auto rounded-4 bg-dark text-dark bg-opacity-10 shadow-sm border-0">
             <div className="text-center pt-3 fw-bold text-muted lead">Visit Chat</div>
             <div className="px-4 py-4">
               <ul className="list-group">
@@ -75,7 +83,7 @@ function VisitChat({ visitState, sendMessage, visitStateChangeHandler }: Props) 
                 ) : (
                   visitState.chatMessages.map((message, index) => (
                     <VisitChatMessage
-                      author={(message as ChatMessage).author}
+                      author={(message as ChatMessage).author as string}
                       message={(message as ChatMessage).message}
                       time={(message as ChatMessage).date}
                       // eslint-disable-next-line react/no-array-index-key
@@ -98,7 +106,13 @@ function VisitChat({ visitState, sendMessage, visitStateChangeHandler }: Props) 
                 <div className="input-group-prepend">
                   <span className="message__label | input-group-text">Your message:</span>
                 </div>
-                <input placeholder="message..." className="form-control" type="text" onChange={setChatMessage()} />
+                <input
+                  placeholder="message..."
+                  name="chatMessage"
+                  className="form-control"
+                  type="text"
+                  onChange={setChatMessage()}
+                />
                 <div className="input-group-append">
                   <button type="submit" className="btn__chat | btn btn-primary text-white">
                     Send
@@ -115,11 +129,16 @@ function VisitChat({ visitState, sendMessage, visitStateChangeHandler }: Props) 
                 )}
               </div>
             </form>
-          </div>
+          </Card>
         </div>
       </div>
     </div>
   );
 }
+
+VisitChat.defaultProps = {
+  sendMessage: () => {},
+  visitStateChangeHandler: () => {},
+};
 
 export default VisitChat;

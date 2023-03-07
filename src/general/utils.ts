@@ -41,7 +41,6 @@ export const formatVisitDate = (visit: VisitObject): VisitObject => {
   const visitTime = new Intl.DateTimeFormat("pl", { timeStyle: "medium" }).format(Date.parse(visit.date as string));
   /* eslint-disable no-param-reassign */
   visit.date = [visitDate, visitTime];
-  console.log(visit);
   visit.dateFormated = true;
   /* eslint-enable no-param-reassign */
   return visit;

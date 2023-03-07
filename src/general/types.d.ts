@@ -133,7 +133,7 @@ export interface Clinic {
 
 export interface ChatMessage {
   chatId: number;
-  author: string;
+  author?: string;
   user?: User;
   message: string;
   date: DateObject;

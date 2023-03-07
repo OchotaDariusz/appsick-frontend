@@ -11,7 +11,6 @@ function App() {
 
   return (
     <>
-      {/* TODO: hide this when logged in and show when logged out(create elemnt must be first before state change) */}
       {isDomReady ? ReactDOM.createPortal(<AuthModal />, document.getElementById("auth-modal") as HTMLElement) : null}
       {isDomReady ? ReactDOM.createPortal(<Navbar />, document.getElementById("navbar") as HTMLElement) : null}
       <div className="container-fluid p-3 p-lg-5 mt-2">

@@ -39,10 +39,10 @@ let chatroom: Chatroom;
 let messages: ChatMessageDTO[];
 function VisitPage() {
   const authState = useAppSelector(selectAuth);
-  const { visitId }: { visitId: number } = JSON.parse(useLoaderData() as string);
-  const navigate = useNavigate();
   const [visitState, dispatch] = useReducer(visitStateReducer, visitPageInitialState);
+  const navigate = useNavigate();
   const isDomReady = useDomReady();
+  const { visitId }: { visitId: number } = JSON.parse(useLoaderData() as string);
 
   const visitStateChangeHandler = useCallback(
     (field: string, value: any) => {
@@ -53,6 +53,7 @@ function VisitPage() {
 
   const setChatMessages = useCallback(
     (chatMessages: ChatMessageDTO[]) => {
+      console.log("setChatMessages");
       visitStateChangeHandler("chatMessages", chatMessages);
     },
     [visitStateChangeHandler]
@@ -61,32 +62,28 @@ function VisitPage() {
   const updateChat = useCallback(() => {
     messages = [];
     chatroom
-      .getChats(
-        (chat) => {
-          messages.push(chat as ChatMessageDTO);
-        },
-        setChatMessages,
-        visitState.chatMessages
-      )
+      .getChats((chat) => {
+        messages.push(chat as ChatMessageDTO);
+      }, setChatMessages)
       .then(() => {
         setChatMessages(messages);
       });
-  }, [setChatMessages, visitState.chatMessages]);
+  }, [setChatMessages]);
 
-  const sendMessage = (
-    event: React.FormEvent<HTMLFormElement>,
-    formRef: React.MutableRefObject<HTMLFormElement | null>
-  ) => {
-    event.preventDefault();
-    chatroom
-      .addChat(visitState.chatMessage)
-      .then(() => (formRef.current as HTMLFormElement).reset())
-      .catch((err) => console.log(err.message));
-  };
+  const sendMessage = useCallback(
+    (event: React.FormEvent<HTMLFormElement>, formRef: React.MutableRefObject<HTMLFormElement | null>) => {
+      event.preventDefault();
+      chatroom
+        .addChat(visitState.chatMessage)
+        .then(() => (formRef.current as HTMLFormElement).reset())
+        .catch((err) => console.log(err.message));
+    },
+    [visitState.chatMessage]
+  );
 
-  const endVisit = () => {
+  const endVisit = useCallback(() => {
     chatroom
-      .endVisit()
+      .endVisit(authState.role)
       .then(() => {
         setStatusVisit(visitId)
           .then(() => {
@@ -96,7 +93,7 @@ function VisitPage() {
           .catch((err) => console.error(err.message));
       })
       .catch((err) => console.log(err.message));
-  };
+  }, [authState.role, navigate, setChatMessages, visitId]);
 
   useEffect(() => {
     getVisitById(visitId).then((visit: VisitObject | ErrorMessage) => {

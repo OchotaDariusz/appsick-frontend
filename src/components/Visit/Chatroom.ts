@@ -13,15 +13,15 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { ChatMessageObject, UserDetails, ErrorMessage, ChatMessageDTO } from "../../general/types";
+import { ChatMessageObject, ChatMessageDTO, Role } from "../../general/types";
 import { firebaseConfig } from "../../general/utils";
-import { getUser, postVisitChatMessages } from "../../general/dataManager";
+import { postVisitChatMessages } from "../../general/dataManager";
 
 initializeApp(firebaseConfig);
 
 const db = getFirestore();
 
-type ChatMessageSetterFn = (chatMessages: ChatMessageDTO[]) => void;
+type ChatMessageUpdateFn = (chatMessages: ChatMessageDTO[]) => void;
 
 class Chatroom {
   private readonly visitId: number;
@@ -54,15 +54,23 @@ class Chatroom {
 
   async getChats(
     callback: (chatMessage: ChatMessageObject | DocumentData) => void,
-    setChatMessages: ChatMessageSetterFn,
-    chatMessages: ChatMessageDTO[]
+    updateCallback: ChatMessageUpdateFn
   ) {
     if (typeof this.unsub === "function") this.unsub();
     const queryResults = query(this.chatMessages, where("visitId", "==", this.visitId), orderBy("date"));
     this.unsub = onSnapshot(queryResults, (snapshot) => {
       snapshot.docChanges().forEach((change) => {
         if (change.type === "added") {
-          setChatMessages([...chatMessages, change.doc.data() as ChatMessageDTO]);
+          getDocs(queryResults)
+            .then((querySnapshot) => {
+              const messages = [];
+              querySnapshot.forEach((docSnapshot) => {
+                messages.push(docSnapshot.data());
+              });
+              messages.push(change.doc.data());
+              updateCallback(messages as ChatMessageDTO[]);
+            })
+            .catch((err) => console.error(err.message));
         }
       });
     });
@@ -72,9 +80,8 @@ class Chatroom {
     });
   }
 
-  async endVisit() {
-    const user: UserDetails | string | ErrorMessage = await getUser();
-    if ("id" in (user as UserDetails) && (user as UserDetails).role === "PATIENT") {
+  async endVisit(role: Role) {
+    if (role === "PATIENT") {
       return;
     }
     if (typeof this.unsub === "function") this.unsub();
