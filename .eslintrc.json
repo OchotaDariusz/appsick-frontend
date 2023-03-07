@@ -33,6 +33,7 @@
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-explicit-any": ["error", { "ignoreRestArgs": true }],
     "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+    "react/jsx-props-no-spreading": "off",
     "jsx-a11y/label-has-associated-control": [
       "error",
       {

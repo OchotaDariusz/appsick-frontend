@@ -133,6 +133,7 @@ export interface Clinic {
 
 export interface ChatMessage {
   chatId: number;
+  author: string;
   user?: User;
   message: string;
   date: DateObject;
@@ -181,6 +182,19 @@ export interface VisitRegisterRequest {
   reason: string;
   status: VisitStatus;
   visitTypes: null;
+}
+
+export interface VisitPageState {
+  userId: number;
+  patientId: number;
+  patientName: string;
+  doctorId: number;
+  doctorName: string;
+  doctorAvatar: string;
+  doctorSpeciality: string;
+  visitReason: string;
+  chatMessage: string | ChatMessageObject;
+  chatMessages: string[] | ChatMessageObject[];
 }
 
 // google api calendar helper types

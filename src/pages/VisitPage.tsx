@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useCallback, useEffect, useReducer, useRef } from "react";
+import React, { useCallback, useEffect, useReducer } from "react";
 import ReactDOM from "react-dom";
 import { useLoaderData, useNavigate, redirect, LoaderFunctionArgs } from "react-router-dom";
-import { ChatMessageDTO, ErrorMessage, UserDetails, Visit, VisitObject } from "../general/types";
+import { ChatMessageDTO, ErrorMessage, UserDetails, Visit, VisitObject, VisitPageState } from "../general/types";
 import { getUser, getVisitById, setStatusVisit } from "../general/dataManager";
 import { useAppSelector } from "../hooks/useAppDispatch";
 import { selectAuth } from "../reducers/store";
@@ -11,6 +11,8 @@ import { handleVisitStateChange } from "../reducers/actions";
 import visitStateReducer from "../reducers/visitStateReducer";
 import useDomReady from "../hooks/useDomReady";
 import VisitEndModal from "../components/Visit/VisitEndModal";
+import { extractDoctorDataFromVisit } from "../general/utils";
+import VisitChat from "../components/Visit/VisitChat";
 
 export const visitsLoader = async ({ params }: LoaderFunctionArgs): Promise<Response | null> => {
   const user: string | UserDetails | ErrorMessage = await getUser();
@@ -20,11 +22,14 @@ export const visitsLoader = async ({ params }: LoaderFunctionArgs): Promise<Resp
   return new Response(JSON.stringify({ visitId: +(params.visitId as string) }));
 };
 
-const visitPageInitialState = {
+const visitPageInitialState: VisitPageState = {
   userId: 0,
   patientId: 0,
   patientName: "",
+  doctorId: 0,
   doctorName: "",
+  doctorAvatar: "",
+  doctorSpeciality: "",
   visitReason: "",
   chatMessage: "",
   chatMessages: [],
@@ -36,7 +41,6 @@ function VisitPage() {
   const authState = useAppSelector(selectAuth);
   const { visitId }: { visitId: number } = JSON.parse(useLoaderData() as string);
   const navigate = useNavigate();
-  const formRef = useRef(null);
   const [visitState, dispatch] = useReducer(visitStateReducer, visitPageInitialState);
   const isDomReady = useDomReady();
 
@@ -69,25 +73,26 @@ function VisitPage() {
       });
   }, [setChatMessages, visitState.chatMessages]);
 
-  // const sendMessage = (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   chatroom
-  //     .addChat(chatMessage)
-  //     .then(() => (formRef.current as HTMLFormElement).reset())
-  //     .catch((err) => console.log(err.message));
-  // };
-
-  // const routeChange = () => {
-  //   let path = `/visit/${props.match.params.visitId}/history`;
-  //   history.push(path);
-  // };
+  const sendMessage = (
+    event: React.FormEvent<HTMLFormElement>,
+    formRef: React.MutableRefObject<HTMLFormElement | null>
+  ) => {
+    event.preventDefault();
+    chatroom
+      .addChat(visitState.chatMessage)
+      .then(() => (formRef.current as HTMLFormElement).reset())
+      .catch((err) => console.log(err.message));
+  };
 
   const endVisit = () => {
     chatroom
       .endVisit()
       .then(() => {
         setStatusVisit(visitId)
-          .then(() => setChatMessages([]))
+          .then(() => {
+            setChatMessages([]);
+            navigate("/");
+          })
           .catch((err) => console.error(err.message));
       })
       .catch((err) => console.log(err.message));
@@ -95,13 +100,13 @@ function VisitPage() {
 
   useEffect(() => {
     getVisitById(visitId).then((visit: VisitObject | ErrorMessage) => {
+      const [doctorAvatar, doctorFullName, doctorSpeciality] = extractDoctorDataFromVisit(visit as Visit);
       visitStateChangeHandler("patientId", authState.patientId);
       visitStateChangeHandler("patientName", `${authState.firstName} ${authState.lastName}`);
       visitStateChangeHandler("doctorId", (visit as Visit).doctor?.doctorId);
-      visitStateChangeHandler(
-        "doctorName",
-        `${(visit as Visit).doctor?.user?.firstName} ${(visit as Visit).doctor?.user?.lastName}`
-      );
+      visitStateChangeHandler("doctorName", doctorFullName);
+      visitStateChangeHandler("doctorAvatar", doctorAvatar);
+      visitStateChangeHandler("doctorSpeciality", doctorSpeciality);
       visitStateChangeHandler("visitReason", (visit as Visit).reason);
     });
     chatroom = new Chatroom(visitId, authState.id, `${authState.firstName} ${authState.lastName}`);
@@ -110,15 +115,18 @@ function VisitPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const visitEndProps = { visitId, endVisit };
+  const visitChatProps = { visitState, sendMessage, visitStateChangeHandler };
+
   return (
     <>
       {isDomReady
         ? ReactDOM.createPortal(
-            <VisitEndModal visitId={visitId} />,
+            <VisitEndModal {...visitEndProps} />,
             document.getElementById("visit-end-modal") as HTMLElement
           )
         : null}
-      <div>Visit Page</div>
+      <VisitChat {...visitChatProps} />
     </>
   );
 }

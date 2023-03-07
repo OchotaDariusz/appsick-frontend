@@ -24,9 +24,10 @@ const medicalDataTemplate: MedicalData = {
 
 type Props = {
   visitId: number;
+  endVisit?: () => void;
 };
 
-function VisitEndModal({ visitId }: Props) {
+function VisitEndModal({ visitId, endVisit }: Props) {
   const authState = useAppSelector(selectAuth);
   const formRef = useRef<HTMLFormElement>(null);
   const [medicalData, dispatch] = useReducer(visitFormReducer, medicalDataTemplate);
@@ -49,7 +50,7 @@ function VisitEndModal({ visitId }: Props) {
     } as MedicalDataObject)
       .then(() => {
         (formRef.current as HTMLFormElement).reset();
-        // endVisit(); // TODO: add endVisit function
+        if (typeof endVisit === "function") endVisit();
         closeModal();
         navigate("/");
       })
@@ -137,5 +138,9 @@ function VisitEndModal({ visitId }: Props) {
     </Modal>
   );
 }
+
+VisitEndModal.defaultProps = {
+  endVisit: () => {},
+};
 
 export default VisitEndModal;
