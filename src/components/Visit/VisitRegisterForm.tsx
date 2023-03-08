@@ -100,7 +100,6 @@ function VisitRegisterForm({ apiCalendar }: Props) {
     };
     delete (formData as VisitRegisterRequest).doctorId;
     delete (formData as VisitRegisterRequest).patientId;
-    console.log(formData);
     postNewVisit({ ...formData } as VisitObject)
       .then(() => {
         (formRef.current as HTMLFormElement).reset();
@@ -215,7 +214,9 @@ function VisitRegisterForm({ apiCalendar }: Props) {
         onChange={textChangeHandler()}
       />
       <div className="d-grid gap-2">
-        <Button type="submit">Register</Button>
+        <Button className="bg-gradient shadow-sm" type="submit">
+          Register
+        </Button>
       </div>
     </form>
   );

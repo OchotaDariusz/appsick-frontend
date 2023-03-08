@@ -133,7 +133,11 @@ function VisitEndModal({ visitId, endVisit }: Props) {
           value={(medicalData as MedicalData).recommendations}
           onChange={textChangeHandler()}
         />
-        <Button type="submit">Submit</Button>
+        <div className="d-grip text-center gap-2">
+          <Button className="bg-gradient w-100" type="submit">
+            Submit
+          </Button>
+        </div>
       </form>
     </Modal>
   );

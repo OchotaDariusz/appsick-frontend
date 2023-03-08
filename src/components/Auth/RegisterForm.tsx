@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { KeyboardEvent, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../UI/Button/Button";
 import { postRegisterData } from "../../general/dataManager";
@@ -36,16 +36,20 @@ function RegisterForm() {
 
   const submitForm = (e: React.FormEvent) => {
     e.preventDefault();
-    const registerData = { ...formState };
-    delete registerData.passwordConfirm;
-    postRegisterData(registerData)
-      .then((data) => {
-        console.log("Registered new user");
-        console.log(data);
-        closeModal();
-        navigate("/");
-      })
-      .catch((err) => console.error(err));
+    if (isFormValid && emailColor === "green") {
+      const registerData = { ...formState };
+      delete registerData.passwordConfirm;
+      postRegisterData(registerData)
+        .then((data) => {
+          console.log("Registered new user");
+          console.log(data);
+          closeModal();
+          navigate("/");
+        })
+        .catch((err) => console.error(err));
+    } else {
+      console.log("invalid form");
+    }
   };
 
   return (
@@ -58,6 +62,7 @@ function RegisterForm() {
         name="email"
         className="form-control mb-3"
         type="email"
+        maxLength={50}
         value={formState.email}
         onChange={textChangeHandler()}
         required
@@ -71,6 +76,8 @@ function RegisterForm() {
         name="password"
         className="form-control mb-3"
         type="password"
+        minLength={6}
+        maxLength={40}
         value={formState.password}
         onChange={textChangeHandler()}
         required
@@ -84,6 +91,8 @@ function RegisterForm() {
         name="passwordConfirm"
         className="form-control mb-3"
         type="password"
+        minLength={6}
+        maxLength={40}
         value={formState.passwordConfirm}
         onChange={textChangeHandler()}
         required
@@ -97,6 +106,8 @@ function RegisterForm() {
         name="firstName"
         className="form-control mb-3"
         type="text"
+        minLength={3}
+        maxLength={20}
         value={formState.firstName}
         onChange={textChangeHandler()}
         required
@@ -109,6 +120,8 @@ function RegisterForm() {
         name="lastName"
         className="form-control mb-3"
         type="text"
+        minLength={3}
+        maxLength={20}
         value={formState.lastName}
         onChange={textChangeHandler()}
         required
@@ -177,7 +190,7 @@ function RegisterForm() {
         </label>
       </div>
       <div className="d-grid gap-2">
-        <Button className={isFormValid && emailColor === "green" ? "" : "disabled"} type="submit">
+        <Button className={isFormValid && emailColor === "green" ? "bg-gradient shadow-sm" : "disabled"} type="submit">
           Submit
         </Button>
       </div>

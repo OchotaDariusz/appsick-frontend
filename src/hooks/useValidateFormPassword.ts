@@ -7,10 +7,10 @@ const useValidateFormPassword = (password: string, passwordConfirmation: string)
     const isConfirmationOk = setTimeout(() => {
       if (password.length === 0 || passwordConfirmation.length === 0) {
         setConfirmationColor("#ced4da");
-      } else if (passwordConfirmation === password) {
+      } else if (passwordConfirmation === password && password.length >= 6 && password.length <= 40) {
         setConfirmationColor("green");
       } else {
-        setConfirmationColor("salmon");
+        setConfirmationColor("red");
       }
     }, 1000);
     return () => {
@@ -18,7 +18,7 @@ const useValidateFormPassword = (password: string, passwordConfirmation: string)
     };
   }, [passwordConfirmation, password]);
 
-  return [confirmationColor, password === passwordConfirmation];
+  return [confirmationColor, password === passwordConfirmation && password.length >= 6 && password.length <= 40];
 };
 
 export default useValidateFormPassword;

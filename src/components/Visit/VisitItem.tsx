@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { Visit, VisitObject } from "../../general/types";
 import { extractDoctorDataFromVisit } from "../../general/utils";
+import Button from "../UI/Button/Button";
 import Card from "../UI/Card/Card";
 
 type Props = {
   visit: VisitObject;
+  type?: number; // 0 - today, 1 - future, 2 - past
 };
 
-function VisitItem({ visit }: Props) {
+function VisitItem({ visit, type }: Props) {
   const [detailsHidden, setDetailsHidden] = useState(true);
 
   if (visit === null) return <Card>Visit does not exists.</Card>;
@@ -71,11 +73,30 @@ function VisitItem({ visit }: Props) {
                   <div className="col-auto rounded-2 bg-white text-dark p-2 pt-3 mb-3 shadow-sm">
                     <h6>Status</h6>
                     <p>{visit.status ?? "visitStatus"}</p>
+                    <div className="d-grid gap-2">
+                      {type === 0 ? (
+                        <a
+                          href={`visit/${visit.visitId}`}
+                          className="btn btn-secondary rounded-pill shadow-sm bg-gradient mx-1"
+                        >
+                          Go to chat
+                        </a>
+                      ) : (
+                        ""
+                      )}
+                      {type === 1 ? <Button className="btn-danger shadow-sm bg-gradient mx-1">Cancel</Button> : ""}
+                    </div>
                   </div>
-                  <div className="col-auto rounded-2 bg-white text-dark p-2 pt-3 mb-3 shadow-sm">
-                    <h6>VisitSummary(medicalData)</h6>
-                    <p>medicalData</p>
-                  </div>
+                  {type === 2 ? (
+                    <div className="col-auto rounded-2 bg-white text-dark p-2 pt-3 mb-3 shadow-sm">
+                      <h6>Visit Summary</h6>
+                      <div className="d-grid gap-2">
+                        <Button className="btn-primary shadow-sm bg-gradient mx-1">Medical Data</Button>
+                      </div>
+                    </div>
+                  ) : (
+                    ""
+                  )}
                   <div className="col-auto rounded-2 bg-white text-dark p-2 pt-3 mb-3 shadow-sm">
                     <h6>Clinic</h6>
                     <p>{(visit as Visit).clinic?.clinicName ?? "clinicName"}</p>
@@ -89,5 +110,9 @@ function VisitItem({ visit }: Props) {
     </section>
   );
 }
+
+VisitItem.defaultProps = {
+  type: 0,
+};
 
 export default VisitItem;

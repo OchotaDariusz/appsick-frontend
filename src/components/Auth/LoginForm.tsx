@@ -83,7 +83,9 @@ function LoginForm() {
         required
       />
       <div className="d-grid gap-2">
-        <Button type="submit">Submit</Button>
+        <Button className="bg-gradient shadow-sm" type="submit">
+          Submit
+        </Button>
       </div>
     </form>
   );

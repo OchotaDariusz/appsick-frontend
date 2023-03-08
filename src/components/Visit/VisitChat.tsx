@@ -43,20 +43,22 @@ function VisitChat({ visitState, sendMessage, visitStateChangeHandler }: Props) 
       <div className="row pt-4">
         <div className="col-12 col-lg-2">
           {authState.role === "DOCTOR" ? (
-            <div>
-              <p>
-                Patient:
-                <br /> {visitState.patientName}
-              </p>
-              <br />
-              <a
-                href={`/patient/${visitState.patientId}/visits`}
-                rel="noreferrer"
-                target="_blank"
-                className="btn btn-pill btn-secondary"
-              >
-                Visit History
-              </a>
+            <div className="row justify-content-center text-center">
+              <Card className="mt-1 mt-lg-3 mb-3 mb-lg-0 rounded-4 border-0 shadow-sm">
+                <div className="fs-5 fw-bold lead">Patient:</div>
+                <div className="fs-6">{visitState.patientName}</div>
+                <br />
+                <div className="d-grip gap-2 text-center">
+                  <a
+                    href={`/patient/${visitState.patientId}/visits`}
+                    rel="noreferrer"
+                    target="_blank"
+                    className="btn rounded-pill w-100 btn-secondary bg-gradient"
+                  >
+                    Visit History
+                  </a>
+                </div>
+              </Card>
             </div>
           ) : (
             <div className="row justify-content-center text-center">
@@ -119,15 +121,15 @@ function VisitChat({ visitState, sendMessage, visitStateChangeHandler }: Props) 
                   </button>
                 </div>
               </div>
-              <div className="d-flex justify-content-center my-2">
-                {authState.role === "DOCTOR" ? (
-                  <Button modalTarget="#visitEndModal" className="btn-danger bg-gradient shadow-sm">
+              {authState.role === "DOCTOR" ? (
+                <div className="d-grip gap-2 justify-content-center my-2 mt-5">
+                  <Button modalTarget="#visitEndModal" className="btn-danger w-100 bg-gradient shadow-sm">
                     End Visit
                   </Button>
-                ) : (
-                  <div />
-                )}
-              </div>
+                </div>
+              ) : (
+                ""
+              )}
             </form>
           </Card>
         </div>

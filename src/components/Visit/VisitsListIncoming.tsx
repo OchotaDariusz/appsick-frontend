@@ -13,7 +13,7 @@ function VisitsListIncoming({ visits }: Props) {
       <div className="text-center fs-3 fw-bold lead text-muted">Incoming</div>
       <hr />
       {visits.map((visit) => (
-        <VisitItem key={crypto.randomUUID()} visit={visit} />
+        <VisitItem key={crypto.randomUUID()} visit={visit} type={1} />
       ))}
     </Card>
   );

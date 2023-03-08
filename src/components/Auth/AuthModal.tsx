@@ -1,29 +1,10 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../hooks/useAppDispatch";
-import { logout } from "../../reducers/store";
-import { postLogout } from "../../general/dataManager";
 import Modal from "../UI/Modal/Modal";
-import Button from "../UI/Button/Button";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
-import { closeModal } from "../../general/utils";
 import googleLogo from "../../assets/google.svg";
 
 function AuthModal() {
-  const navigate = useNavigate();
-  const authDispatch = useAppDispatch();
-
-  const signOut = () => {
-    postLogout()
-      .then(() => {
-        authDispatch(logout());
-        closeModal();
-        navigate("/");
-      })
-      .catch((err) => console.error(err));
-  };
-
   return (
     <Modal id="authModal" ariaLabel="authModalLabel">
       <nav className="d-flex justify-content-center align-items-center">
@@ -57,6 +38,8 @@ function AuthModal() {
         </div>
       </nav>
 
+      <hr />
+
       <div className="tab-content" id="nav-tabContent">
         <div className="tab-pane fade show active p-3" id="nav-login" role="tabpanel" aria-labelledby="nav-login-tab">
           <LoginForm />
@@ -73,7 +56,6 @@ function AuthModal() {
         >
           <img src={googleLogo} width="18px" height="18px" alt="googleSignIn" /> Sign in with Google
         </a>
-        <Button onClick={signOut}>Logout</Button>
       </div>
     </Modal>
   );
