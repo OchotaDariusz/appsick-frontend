@@ -30,7 +30,7 @@ const axiosInstance: AxiosInstance = axios.create({
 // POST's
 const postData = async (endpoint: string, body?: unknown): Promise<unknown> => {
   try {
-    return await axiosInstance.post(endpoint, body);
+    return await axiosInstance.post(`/api${endpoint}`, body);
   } catch {
     return {
       errorMessage: "Cannot post data.",
@@ -101,7 +101,7 @@ export const postPatientMedicalData = async (body: MedicalDataObject) => {
 // GET's
 const getData = async (endpoint: string): Promise<unknown> => {
   try {
-    const { data } = await axiosInstance.get(endpoint);
+    const { data } = await axiosInstance.get(`/api${endpoint}`);
     return data;
   } catch {
     return {
@@ -169,6 +169,7 @@ export const getPatientVisits = async (time?: string, pageNumber?: number): Prom
     const timeEndpoint = time ?? "";
     const currentPage = `?pageNumber=${pageNumber}` ?? "";
     const patient: PatientObject | ErrorMessage = await getPatient();
+    console.log(patient);
     if ("patientId" in (patient as Patient)) {
       return await (getData(`/visit/patient/${(<Patient>patient).patientId}${timeEndpoint}${currentPage}`) as Promise<
         VisitObject[]
@@ -287,7 +288,7 @@ export const getDoctorSpecialities = async (): Promise<DoctorSpeciality[] | Erro
 
 export const setStatusVisit = async (visitId: number | string) => {
   try {
-    return await axiosInstance.put(`/visit/status/${visitId}`, "COMPLETED");
+    return await axiosInstance.put(`/api/visit/status/${visitId}`, "COMPLETED");
   } catch {
     return {
       errorMessage: "Cannot put data.",

@@ -8,6 +8,7 @@ import Button from "../UI/Button/Button";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 import { closeModal } from "../../general/utils";
+import googleLogo from "../../assets/google.svg";
 
 function AuthModal() {
   const navigate = useNavigate();
@@ -65,7 +66,15 @@ function AuthModal() {
           <RegisterForm />
         </div>
       </div>
-      <Button onClick={signOut}>Logout</Button>
+      <div className="d-grid gap-2">
+        <a
+          className="btn rounded-pill btn-primary text-white mx-1 bg-gradient shadow-sm"
+          href={`${import.meta.env.VITE_BACKEND_HOST}/oauth2/authorization/google`}
+        >
+          <img src={googleLogo} width="18px" height="18px" alt="googleSignIn" /> Sign in with Google
+        </a>
+        <Button onClick={signOut}>Logout</Button>
+      </div>
     </Modal>
   );
 }

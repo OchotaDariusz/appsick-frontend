@@ -13,7 +13,7 @@ import {
 } from "../../general/types";
 import useGetDoctorsBySpeciality from "../../hooks/useGetDoctorsBySpeciality";
 import useGetDoctorSpecialities from "../../hooks/useGetDoctorSpecialities";
-import { handleTextChange, handleNumberChange } from "../../reducers/actions";
+import ACTION, { handleTextChange, handleNumberChange } from "../../reducers/actions";
 import visitFormReducer from "../../reducers/visitFormReducer";
 import Button from "../UI/Button/Button";
 import { useAppSelector } from "../../hooks/useAppDispatch";
@@ -36,6 +36,7 @@ const visitTemplate: VisitRegisterRequest = {
   patient: {
     patientId: 0,
   },
+  patientId: 0,
   reason: "",
   status: "PENDING",
   visitTypes: null,
@@ -57,6 +58,14 @@ function VisitRegisterForm({ apiCalendar }: Props) {
   const [doctorEmail, setDoctorEmail] = useState("");
 
   const doctorId = useMemo(() => (formState as VisitRegisterRequest).doctorId, [formState]);
+
+  useEffect(() => {
+    dispatch({
+      type: ACTION.GET_NUMBER,
+      field: "patientId",
+      payload: authState.patientId,
+    });
+  }, [authState.patientId]);
 
   useEffect(() => {
     if ((formState as VisitRegisterRequest).doctorId !== 0) {
@@ -84,10 +93,15 @@ function VisitRegisterForm({ apiCalendar }: Props) {
   const submitForm = (event: React.FormEvent) => {
     event.preventDefault();
 
-    const formData = { ...formState, doctor: { doctorId: (formState as VisitRegisterRequest).doctorId } };
+    const formData = {
+      ...formState,
+      doctor: { doctorId: (formState as VisitRegisterRequest).doctorId },
+      patient: { patientId: (formState as VisitRegisterRequest).patientId },
+    };
     delete (formData as VisitRegisterRequest).doctorId;
+    delete (formData as VisitRegisterRequest).patientId;
     console.log(formData);
-    postNewVisit({ ...formData, patient: { patientId: authState.patientId } } as VisitObject)
+    postNewVisit({ ...formData } as VisitObject)
       .then(() => {
         (formRef.current as HTMLFormElement).reset();
         const eventDate = new Date((formState as VisitRegisterRequest).date as string);

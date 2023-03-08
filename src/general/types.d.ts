@@ -179,6 +179,7 @@ export interface VisitRegisterRequest {
   patient: {
     patientId: number;
   };
+  patientId?: number;
   reason: string;
   status: VisitStatus;
   visitTypes: null;
