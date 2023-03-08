@@ -3,9 +3,10 @@ import ApiCalendar from "react-google-calendar-api";
 import VisitRegisterForm from "../components/Visit/VisitRegisterForm";
 import { calendarConfig } from "../general/utils";
 
-const apiCalendar = new ApiCalendar(calendarConfig);
+let apiCalendar: ApiCalendar;
 function VisitRegisterPage() {
   useEffect(() => {
+    apiCalendar = new ApiCalendar(calendarConfig);
     apiCalendar.handleAuthClick();
   }, []);
 

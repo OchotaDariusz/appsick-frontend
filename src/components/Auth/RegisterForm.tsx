@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, useReducer } from "react";
+import React, { useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../UI/Button/Button";
 import { postRegisterData } from "../../general/dataManager";

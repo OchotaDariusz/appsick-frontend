@@ -5,8 +5,6 @@ import VisitsListToday from "../components/Visit/VisitsListToday";
 import { getPatientVisitsForToday, getPatientVisitsFromPast, getPatientVisitsInFuture } from "../general/dataManager";
 import { Visit } from "../general/types";
 import { formatVisitDate, isToday } from "../general/utils";
-import useDetectPageBottom from "../hooks/useDetectPageBottom";
-// import visitList from "../mocks/dummyVisit";
 
 // const page = 1;
 function AllVisitsPage() {
@@ -14,20 +12,17 @@ function AllVisitsPage() {
   const [todayVisits, setTodayVisits] = useState<Visit[]>([]);
   const [futureVisits, setFutureVisits] = useState<Visit[]>([]);
   const [pastVisits, setPastVisits] = useState<Visit[]>([]);
-  const reachedBottom = useDetectPageBottom();
-  const [pageNumber, setPageNumber] = useState(1);
-  console.log("reachedBottom", reachedBottom);
-  console.log("pageNumber", pageNumber);
+  // const [pageNumber, setPageNumber] = useState(1);
 
-  // eslint-disable-next-line consistent-return
-  useEffect(() => {
-    if (pastVisits.length > 0) {
-      const nextPageDelay = setTimeout(() => {
-        setPageNumber((prev) => prev + 1);
-      });
-      return () => clearTimeout(nextPageDelay);
-    }
-  }, [pastVisits.length, reachedBottom]);
+  // // eslint-disable-next-line consistent-return
+  // useEffect(() => {
+  //   if (pastVisits.length > 0) {
+  //     const nextPageDelay = setTimeout(() => {
+  //       setPageNumber((prev) => prev + 1);
+  //     });
+  //     return () => clearTimeout(nextPageDelay);
+  //   }
+  // }, [pastVisits.length]);
 
   // useEffect(() => {
   //   const visitsToSet = visitList.map((visit) => formatVisitDate(visit) as Visit);
@@ -56,7 +51,7 @@ function AllVisitsPage() {
   }, []);
 
   useEffect(() => {
-    getPatientVisitsFromPast(pageNumber)
+    getPatientVisitsFromPast()
       .then((visitsFromPast) => {
         if (pastVisits.length === 0) {
           setPastVisits((visitsFromPast as Visit[]).map(formatVisitDate) as Visit[]);
@@ -67,7 +62,7 @@ function AllVisitsPage() {
         }
       })
       .catch((err) => console.warn(err.message));
-  }, [pageNumber, pastVisits.length]);
+  }, [pastVisits.length]);
 
   return (
     <>
