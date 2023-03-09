@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useCallback, useEffect, useReducer } from "react";
 import ReactDOM from "react-dom";
-import { useLoaderData, useNavigate, redirect, LoaderFunctionArgs } from "react-router-dom";
-import { ChatMessageDTO, ErrorMessage, UserDetails, Visit, VisitObject, VisitPageState } from "../general/types";
-import { getUser, getVisitById, setStatusVisit } from "../general/dataManager";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import { ChatMessageDTO, ErrorMessage, Visit, VisitObject, VisitPageState } from "../general/types";
+import { getVisitById, setStatusVisit } from "../general/dataManager";
 import { useAppSelector } from "../hooks/useAppDispatch";
 import { selectAuth } from "../reducers/store";
 import Chatroom from "../components/Visit/Chatroom";
@@ -13,14 +13,6 @@ import useDomReady from "../hooks/useDomReady";
 import VisitEndModal from "../components/Visit/VisitEndModal";
 import { extractDoctorDataFromVisit } from "../general/utils";
 import VisitChat from "../components/Visit/VisitChat";
-
-export const visitsLoader = async ({ params }: LoaderFunctionArgs): Promise<Response | null> => {
-  const user: string | UserDetails | ErrorMessage = await getUser();
-  if (typeof user === "string" || !("id" in (user as UserDetails))) {
-    return redirect("/");
-  }
-  return new Response(JSON.stringify({ visitId: +(params.visitId as string) }));
-};
 
 const visitPageInitialState: VisitPageState = {
   userId: 0,

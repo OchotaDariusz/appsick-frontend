@@ -103,7 +103,18 @@ function VisitItem({ visit, type }: Props) {
                     <div className="col-auto rounded-2 bg-white text-dark p-2 pt-3 mb-3 shadow-sm">
                       <h6>Visit Summary</h6>
                       <div className="d-grid gap-2">
-                        <Button className="btn-primary shadow-sm bg-gradient mx-1">Medical Data</Button>
+                        <a
+                          href={`visit/${visit.visitId}/medical_data`}
+                          className="btn disabled rounded-pill btn-primary shadow-sm bg-gradient mx-1"
+                        >
+                          Medical Data
+                        </a>
+                        <a
+                          href={`visit/${visit.visitId}/history`}
+                          className="btn btn-secondary rounded-pill shadow-sm bg-gradient mx-1"
+                        >
+                          Chat History
+                        </a>
                       </div>
                     </div>
                   ) : (

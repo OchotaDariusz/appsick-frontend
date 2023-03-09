@@ -2,12 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import loader from "./general/loader";
+import loader, { visitsLoader } from "./general/loader";
 import store from "./reducers/store";
 import App from "./App";
 import ErrorPage from "./pages/ErrorPage";
 import AllVisitsPage from "./pages/AllVisitsPage";
-import VisitPage, { visitsLoader } from "./pages/VisitPage";
+import VisitPage from "./pages/VisitPage";
 import VisitChatHistoryPage from "./pages/VisitChatHistoryPage";
 import VisitRegisterPage from "./pages/VisitRegisterPage";
 import PatientVisitsHistoryPage from "./pages/PatientVisitsHistoryPage";
@@ -35,7 +35,7 @@ const router = createBrowserRouter([
       },
       {
         path: "visit/:visitId/history",
-        loader,
+        loader: visitsLoader,
         element: <VisitChatHistoryPage />,
       },
       {

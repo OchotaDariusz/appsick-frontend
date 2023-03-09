@@ -1,4 +1,4 @@
-import { redirect } from "react-router-dom";
+import { LoaderFunctionArgs, redirect } from "react-router-dom";
 import { getPatient, getUser } from "./dataManager";
 import { AuthObject, ErrorMessage, Patient, UserDetails } from "./types";
 
@@ -29,6 +29,14 @@ const loader = async () => {
       .catch((err) => console.error(err.message));
   }
   return null;
+};
+
+export const visitsLoader = async ({ params }: LoaderFunctionArgs): Promise<Response | null> => {
+  const user: string | UserDetails | ErrorMessage = await getUser();
+  if (typeof user === "string" || !("id" in (user as UserDetails))) {
+    return redirect("/");
+  }
+  return new Response(JSON.stringify({ visitId: +(params.visitId as string) }));
 };
 
 export default loader;
