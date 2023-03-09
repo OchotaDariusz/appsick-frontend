@@ -26,7 +26,7 @@ function VisitChatHistoryPage() {
     <Card className="rounded-4 border-0 shadow-sm">
       {chatArray.map((chat) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        lastId === (chat.user as User).userId ? console.log("tak") : change((chat.user as User).userId);
+        lastId === (chat.user as User).userId ? console.log("tak") : change((chat.user as User).userId); // TODO: refactor doctor see all messages on one side
 
         return (
           <div key={crypto.randomUUID()}>
