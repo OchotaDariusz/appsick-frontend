@@ -1,7 +1,50 @@
-import { AuthObject, UserDetails, Visit, VisitObject } from "./types";
+// import ApiCalendar from "react-google-calendar-api";
+import ApiCalendar from "react-google-calendar-api";
+import { AuthObject, ConfigApiCalendar, UserDetails, Visit, VisitEvent, VisitObject } from "./types";
 import maleDoctorAv from "../assets/male.svg";
 import femaleDoctorAv from "../assets/female.svg";
 import { userDetailsTemplate } from "../reducers/store";
+
+const calendarConfig: ConfigApiCalendar = {
+  clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+  apiKey: import.meta.env.VITE_GOOGLE_APP_ID,
+  scope: "https://www.googleapis.com/auth/calendar",
+  discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
+};
+
+export const apiCalendar = new ApiCalendar(calendarConfig);
+
+export const createVisitEventObject = (reason: string, eventDate: Date, doctorEmail: string) => {
+  const visitEvent: VisitEvent = {
+    summary: "AppSick Online Visit",
+    description: reason,
+    start: {
+      dateTime: eventDate.toISOString(),
+      timeZone: "Europe/Warsaw",
+    },
+    end: {
+      dateTime: new Date(eventDate.getTime() + 3600000).toISOString(),
+      timeZone: "Europe/Warsaw",
+    },
+    attendees: [{ email: doctorEmail }],
+    reminders: {
+      useDefault: false,
+      overrides: [
+        { method: "email", minutes: 24 * 60 },
+        { method: "popup", minutes: 10 },
+      ],
+    },
+    conferenceData: {
+      createRequest: {
+        requestId: crypto.randomUUID(),
+        conferenceSolutionKey: {
+          type: "hangoutsMeet",
+        },
+      },
+    },
+  };
+  return visitEvent;
+};
 
 // config for firebase
 export const firebaseConfig = {

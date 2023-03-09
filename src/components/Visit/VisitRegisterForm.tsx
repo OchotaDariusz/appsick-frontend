@@ -18,6 +18,7 @@ import ACTION, { handleTextChange, handleNumberChange } from "../../reducers/act
 import visitFormReducer from "../../reducers/visitFormReducer";
 import { useAppSelector } from "../../hooks/useAppDispatch";
 import { selectAuth } from "../../reducers/store";
+import { apiCalendar, createVisitEventObject } from "../../general/utils";
 
 const ONLINE_CLINIC_ID = 1; // TODO discuss. ?
 
@@ -44,8 +45,6 @@ const visitTemplate: VisitRegisterRequest = {
 
 let selectedSpeciality: DoctorSpeciality;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-declare let gapi: any;
 function VisitRegisterForm() {
   const navigate = useNavigate();
   const formRef = useRef<HTMLFormElement>(null);
@@ -104,50 +103,18 @@ function VisitRegisterForm() {
       .then(() => {
         (formRef.current as HTMLFormElement).reset();
         const eventDate = new Date((formState as VisitRegisterRequest).date as string);
-        const visitEvent: VisitEvent = {
-          summary: "AppSick Online Visit",
-          description: `${(formState as VisitRegisterRequest).reason}`,
-          start: {
-            dateTime: eventDate.toISOString(),
-            timeZone: "Europe/Warsaw",
-          },
-          end: {
-            dateTime: new Date(eventDate.getTime() + 3600000).toISOString(),
-            timeZone: "Europe/Warsaw",
-          },
-          attendees: [{ email: doctorEmail }],
-          reminders: {
-            useDefault: false,
-            overrides: [
-              { method: "email", minutes: 24 * 60 },
-              { method: "popup", minutes: 10 },
-            ],
-          },
-          conferenceData: {
-            createRequest: {
-              requestId: crypto.randomUUID(),
-              conferenceSolutionKey: {
-                type: "hangoutsMeet",
-              },
-            },
-          },
-        };
-        // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // // @ts-ignore
-        // const calendarEventRequest = apiCalendar.createEventWithVideoConference(visitEvent, "primary", "all");
-        gapi.client.calendar.events
-          .insert({
-            calendarId: "primary",
-            resource: visitEvent,
-            sendNotifications: true,
-            conferenceDataVersion: 1,
-          })
-          .execute((registeredEvent: Partial<VisitEvent>) => {
-            console.log("Event created!");
-            console.log(registeredEvent);
-            setIsVisitPosting(false);
-            navigate("/");
-          });
+        const visitEvent: VisitEvent = createVisitEventObject(
+          (formState as VisitRegisterRequest).reason,
+          eventDate,
+          doctorEmail
+        );
+        const calendarEventRequest = apiCalendar.createEventWithVideoConference(visitEvent, "primary", "all");
+        calendarEventRequest.execute((registeredEvent: Partial<VisitEvent>) => {
+          console.log("Event created!");
+          console.log(registeredEvent);
+          setIsVisitPosting(false);
+          navigate("/");
+        });
         setIsVisitPosting(false);
       })
       .catch((err) => {

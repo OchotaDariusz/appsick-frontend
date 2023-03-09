@@ -199,6 +199,14 @@ export interface VisitPageState {
 }
 
 // google api calendar helper types
+export interface ConfigApiCalendar {
+  clientId: string;
+  apiKey: string;
+  scope: string;
+  discoveryDocs: string[];
+  hosted_domain?: string;
+}
+
 interface TimeCalendarType {
   dateTime?: string;
   timeZone: string;

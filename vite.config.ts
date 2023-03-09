@@ -22,4 +22,10 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: ["./src/setupTests.ts"],
   },
+  build: {
+    commonjsOptions: { include: [] },
+  },
+  optimizeDeps: {
+    disabled: false,
+  },
 });

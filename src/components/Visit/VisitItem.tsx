@@ -104,8 +104,8 @@ function VisitItem({ visit, type }: Props) {
                       <h6>Visit Summary</h6>
                       <div className="d-grid gap-2">
                         <a
-                          href={`visit/${visit.visitId}/medical_data`}
-                          className="btn disabled rounded-pill btn-primary shadow-sm bg-gradient mx-1"
+                          href={`${import.meta.env.VITE_BACKEND_HOST}/api/medical_data/visit/${visit.visitId}`}
+                          className="btn text-white rounded-pill btn-primary shadow-sm bg-gradient mx-1"
                         >
                           Medical Data
                         </a>
