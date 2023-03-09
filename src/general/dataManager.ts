@@ -295,3 +295,13 @@ export const setStatusVisit = async (visitId: number | string) => {
     };
   }
 };
+
+export const deleteVisit = async (visitId: number | string) => {
+  try {
+    return await axiosInstance.delete(`/api/visit/${visitId}`);
+  } catch {
+    return {
+      errorMessage: "Cannot delete visit.",
+    };
+  }
+};

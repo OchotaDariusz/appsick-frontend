@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { deleteVisit } from "../../general/dataManager";
 import { Visit, VisitObject } from "../../general/types";
 import { extractDoctorDataFromVisit } from "../../general/utils";
 import Button from "../UI/Button/Button";
@@ -22,6 +23,10 @@ function VisitItem({ visit, type }: Props) {
   };
 
   const [doctorAvatar, doctorFullName, doctorSpeciality] = extractDoctorDataFromVisit(visit);
+
+  const cancelVisit = () => {
+    deleteVisit(visit.visitId as number);
+  };
 
   return (
     <section role="contentinfo">
@@ -84,7 +89,13 @@ function VisitItem({ visit, type }: Props) {
                       ) : (
                         ""
                       )}
-                      {type === 1 ? <Button className="btn-danger shadow-sm bg-gradient mx-1">Cancel</Button> : ""}
+                      {type === 1 ? (
+                        <Button className="btn-danger shadow-sm bg-gradient mx-1" onClick={cancelVisit}>
+                          Cancel
+                        </Button>
+                      ) : (
+                        ""
+                      )}
                     </div>
                   </div>
                   {type === 2 ? (
