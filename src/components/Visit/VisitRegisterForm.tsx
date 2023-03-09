@@ -1,5 +1,7 @@
 import React, { useState, useReducer, useRef, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import Button from "../UI/Button/Button";
+import Spinner from "../UI/Spinner/Spinner";
 import { getDoctorById, postNewVisit } from "../../general/dataManager";
 import {
   Doctor,
@@ -14,7 +16,6 @@ import useGetDoctorsBySpeciality from "../../hooks/useGetDoctorsBySpeciality";
 import useGetDoctorSpecialities from "../../hooks/useGetDoctorSpecialities";
 import ACTION, { handleTextChange, handleNumberChange } from "../../reducers/actions";
 import visitFormReducer from "../../reducers/visitFormReducer";
-import Button from "../UI/Button/Button";
 import { useAppSelector } from "../../hooks/useAppDispatch";
 import { selectAuth } from "../../reducers/store";
 
@@ -53,6 +54,7 @@ function VisitRegisterForm() {
   const [availableDoctors, setAvailableDoctors] = useState<DoctorObject[]>([]);
   const authState = useAppSelector(selectAuth);
   const [doctorEmail, setDoctorEmail] = useState("");
+  const [isVisitPosting, setIsVisitPosting] = useState(false);
 
   const doctorId = useMemo(() => (formState as VisitRegisterRequest).doctorId, [formState]);
 
@@ -97,6 +99,7 @@ function VisitRegisterForm() {
     };
     delete (formData as VisitRegisterRequest).doctorId;
     delete (formData as VisitRegisterRequest).patientId;
+    setIsVisitPosting(true);
     postNewVisit({ ...formData } as VisitObject)
       .then(() => {
         (formRef.current as HTMLFormElement).reset();
@@ -142,10 +145,15 @@ function VisitRegisterForm() {
           .execute((registeredEvent: Partial<VisitEvent>) => {
             console.log("Event created!");
             console.log(registeredEvent);
+            setIsVisitPosting(false);
             navigate("/");
           });
+        setIsVisitPosting(false);
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => {
+        console.log(err.message);
+        setIsVisitPosting(false);
+      });
   };
 
   return (
@@ -224,9 +232,13 @@ function VisitRegisterForm() {
         onChange={textChangeHandler()}
       />
       <div className="d-grid gap-2">
-        <Button className="bg-gradient shadow-sm" type="submit">
-          Register
-        </Button>
+        {isVisitPosting ? (
+          <Spinner />
+        ) : (
+          <Button className="bg-gradient shadow-sm" type="submit">
+            Register
+          </Button>
+        )}
       </div>
     </form>
   );

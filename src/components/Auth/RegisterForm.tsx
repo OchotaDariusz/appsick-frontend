@@ -1,6 +1,7 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../UI/Button/Button";
+import Spinner from "../UI/Spinner/Spinner";
 import { postRegisterData } from "../../general/dataManager";
 import { closeModal } from "../../general/utils";
 import { RegisterRequest } from "../../general/types";
@@ -23,6 +24,7 @@ const initialRegisterFormState: RegisterRequest = {
 
 function RegisterForm() {
   const [formState, dispatch] = useReducer(userRegFormReducer, initialRegisterFormState);
+  const [isFormPosting, setIsFormPosting] = useState(false);
   const emailColor = useValidateFormEmail(formState.email);
   const [passwordConfirmColor, isFormValid] = useValidateFormPassword(
     formState.password,
@@ -39,14 +41,19 @@ function RegisterForm() {
     if (isFormValid && emailColor === "green") {
       const registerData = { ...formState };
       delete registerData.passwordConfirm;
+      setIsFormPosting(true);
       postRegisterData(registerData)
         .then((data) => {
           console.log("Registered new user");
           console.log(data);
           closeModal();
+          setIsFormPosting(false);
           navigate("/");
         })
-        .catch((err) => console.error(err));
+        .catch((err) => {
+          console.error(err);
+          setIsFormPosting(false);
+        });
     } else {
       console.log("invalid form");
     }
@@ -190,9 +197,16 @@ function RegisterForm() {
         </label>
       </div>
       <div className="d-grid gap-2">
-        <Button className={isFormValid && emailColor === "green" ? "bg-gradient shadow-sm" : "disabled"} type="submit">
-          Submit
-        </Button>
+        {isFormPosting ? (
+          <Spinner />
+        ) : (
+          <Button
+            className={isFormValid && emailColor === "green" ? "bg-gradient shadow-sm" : "disabled"}
+            type="submit"
+          >
+            Submit
+          </Button>
+        )}
       </div>
     </form>
   );

@@ -8,10 +8,14 @@ import { formatVisitDate, isToday } from "../general/utils";
 
 // const page = 1;
 function AllVisitsPage() {
-  // const [visits, setVisits] = useState<Visit[]>([]);
   const [todayVisits, setTodayVisits] = useState<Visit[]>([]);
+  const [isTodayVisitsLoading, setIsTodayVisitsLoading] = useState(false);
+
   const [futureVisits, setFutureVisits] = useState<Visit[]>([]);
+  const [isFutureVisitsLoading, setIsFutureVisitsLoading] = useState(false);
+
   const [pastVisits, setPastVisits] = useState<Visit[]>([]);
+  const [isPastVisitsLoading, setIsPastVisitsLoading] = useState(false);
   // const [pageNumber, setPageNumber] = useState(1);
 
   // // eslint-disable-next-line consistent-return
@@ -30,6 +34,7 @@ function AllVisitsPage() {
   // }, [setVisits]);
 
   useEffect(() => {
+    setIsTodayVisitsLoading(true);
     getPatientVisitsForToday()
       .then((visitsForToday) => {
         console.log(visitsForToday);
@@ -37,30 +42,44 @@ function AllVisitsPage() {
           (todayVisit) => todayVisit.status === "PENDING" && isToday(todayVisit)
         );
         setTodayVisits(filtered.map(formatVisitDate) as Visit[]);
+        setIsTodayVisitsLoading(false);
       })
-      .catch((err) => console.warn(err.message));
+      .catch((err) => {
+        console.warn(err.message);
+        setIsTodayVisitsLoading(false);
+      });
   }, []);
 
   useEffect(() => {
+    setIsFutureVisitsLoading(true);
     getPatientVisitsInFuture()
       .then((visitsIncoming) => {
         const filtered = (visitsIncoming as Visit[]).filter((incomingVisit) => !isToday(incomingVisit));
         setFutureVisits(filtered.map(formatVisitDate) as Visit[]);
+        setIsFutureVisitsLoading(false);
       })
-      .catch((err) => console.warn(err.message));
+      .catch((err) => {
+        console.warn(err.message);
+        setIsFutureVisitsLoading(false);
+      });
   }, []);
 
   useEffect(() => {
+    setIsPastVisitsLoading(true);
     getPatientVisitsFromPast()
       .then((visitsFromPast) => {
         setPastVisits((visitsFromPast as Visit[]).map(formatVisitDate) as Visit[]);
+        setIsPastVisitsLoading(false);
       })
-      .catch((err) => console.warn(err.message));
+      .catch((err) => {
+        console.warn(err.message);
+        setIsPastVisitsLoading(false);
+      });
   }, []);
 
   return (
     <>
-      <VisitsListToday visits={todayVisits} />
+      <VisitsListToday isLoading={isTodayVisitsLoading} visits={todayVisits} />
 
       <nav className="d-flex justify-content-center align-items-center">
         <div className="nav nav-tabs nav-fill" id="nav-visits-tab" role="tablist">
@@ -100,11 +119,11 @@ function AllVisitsPage() {
           role="tabpanel"
           aria-labelledby="future-visits-tab"
         >
-          <VisitsListIncoming visits={futureVisits} />
+          <VisitsListIncoming isLoading={isFutureVisitsLoading} visits={futureVisits} />
         </div>
 
         <div className="tab-pane fade p-3" id="history-visits" role="tabpanel" aria-labelledby="history-visits-tab">
-          <VisitsListHistory visits={pastVisits} />
+          <VisitsListHistory isLoading={isPastVisitsLoading} visits={pastVisits} />
         </div>
       </div>
     </>

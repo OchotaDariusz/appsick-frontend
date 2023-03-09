@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { deleteVisit } from "../../general/dataManager";
 import { Visit, VisitObject } from "../../general/types";
 import { extractDoctorDataFromVisit } from "../../general/utils";
+import VISIT_TIME from "../../general/visitTime";
 import Button from "../UI/Button/Button";
 import Card from "../UI/Card/Card";
 
 type Props = {
   visit: VisitObject;
-  type?: number; // 0 - today, 1 - future, 2 - past
+  type?: VISIT_TIME;
 };
 
 function VisitItem({ visit, type }: Props) {
@@ -123,7 +124,7 @@ function VisitItem({ visit, type }: Props) {
 }
 
 VisitItem.defaultProps = {
-  type: 0,
+  type: VISIT_TIME.TODAY,
 };
 
 export default VisitItem;

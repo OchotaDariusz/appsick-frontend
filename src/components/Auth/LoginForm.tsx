@@ -1,6 +1,7 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../UI/Button/Button";
+import Spinner from "../UI/Spinner/Spinner";
 import { AuthObject, LoginRequest, Patient, UserDetails } from "../../general/types";
 import { closeModal, mapDataToAuthObject } from "../../general/utils";
 import { handleTextChange } from "../../reducers/actions";
@@ -16,6 +17,7 @@ const initialLoginFormState: LoginRequest = {
 
 function LoginForm() {
   const [formState, dispatch] = useReducer(userLoginFormReducer, initialLoginFormState);
+  const [isFormPosting, setIsFormPosting] = useState(false);
   const authDispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -31,6 +33,7 @@ function LoginForm() {
 
   const submitForm = (e: React.FormEvent) => {
     e.preventDefault();
+    setIsFormPosting(true);
     postLoginData(formState)
       .then(() => {
         console.log("Logged in");
@@ -52,8 +55,12 @@ function LoginForm() {
             dispatchLogin(authObject);
           }
         });
+        setIsFormPosting(false);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+        setIsFormPosting(false);
+      });
   };
 
   return (
@@ -83,9 +90,13 @@ function LoginForm() {
         required
       />
       <div className="d-grid gap-2">
-        <Button className="bg-gradient shadow-sm" type="submit">
-          Submit
-        </Button>
+        {isFormPosting ? (
+          <Spinner />
+        ) : (
+          <Button className="bg-gradient shadow-sm" type="submit">
+            Submit
+          </Button>
+        )}
       </div>
     </form>
   );
