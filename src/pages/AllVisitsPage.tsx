@@ -53,16 +53,10 @@ function AllVisitsPage() {
   useEffect(() => {
     getPatientVisitsFromPast()
       .then((visitsFromPast) => {
-        if (pastVisits.length === 0) {
-          setPastVisits((visitsFromPast as Visit[]).map(formatVisitDate) as Visit[]);
-        } else {
-          setPastVisits((prevVisits) => {
-            return [...(prevVisits as Visit[]), ...((visitsFromPast as Visit[]).map(formatVisitDate) as Visit[])];
-          });
-        }
+        setPastVisits((visitsFromPast as Visit[]).map(formatVisitDate) as Visit[]);
       })
       .catch((err) => console.warn(err.message));
-  }, [pastVisits.length]);
+  }, []);
 
   return (
     <>

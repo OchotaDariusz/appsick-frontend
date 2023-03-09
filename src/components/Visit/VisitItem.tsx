@@ -26,17 +26,17 @@ function VisitItem({ visit, type }: Props) {
   return (
     <section role="contentinfo">
       <Card className="my-4 shadow-sm">
-        <div className="row">
+        <div className="row justify-content-center">
           <div className="row text-center">
             <div
-              className="d-flex"
+              className="d-flex px-0"
               onClick={toogleVisitDetails}
               onKeyDown={toogleVisitDetails}
               aria-expanded={detailsHidden}
               role="button"
               tabIndex={0}
             >
-              <div className="col-2 px-md-2 px-xl-3 d-none d-lg-block">
+              <div className="col-2 pe-lg-3 d-none d-lg-block">
                 <div className="col-auto rounded-3 bg-white text-dark shadow-sm p-2 border border-2">
                   {(visit.date as string[])[0]}
                   <hr />
@@ -44,7 +44,7 @@ function VisitItem({ visit, type }: Props) {
                 </div>
               </div>
 
-              <div className="col-12 col-lg-10 rounded-3 shadow-sm bg-white text-dark ms-3 pb-3 px-4 pt-2 border border-2">
+              <div className="col-12 col-lg-10 rounded-3 shadow-sm bg-white text-dark pb-3 px-2 px-lg-4 pt-2 border border-2">
                 <div className="row justify-content-between">
                   <div className="col-auto my-1 fs-3 text-start">{doctorFullName}</div>
                   <div className="col-auto my-1 fs-4 text-end">{doctorSpeciality}</div>

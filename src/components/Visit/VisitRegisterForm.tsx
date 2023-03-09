@@ -1,6 +1,5 @@
 import React, { useState, useReducer, useRef, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import ApiCalendar from "react-google-calendar-api";
 import { getDoctorById, postNewVisit } from "../../general/dataManager";
 import {
   Doctor,
@@ -44,11 +43,9 @@ const visitTemplate: VisitRegisterRequest = {
 
 let selectedSpeciality: DoctorSpeciality;
 
-type Props = {
-  apiCalendar?: ApiCalendar;
-};
-
-function VisitRegisterForm({ apiCalendar }: Props) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare let gapi: any;
+function VisitRegisterForm() {
   const navigate = useNavigate();
   const formRef = useRef<HTMLFormElement>(null);
   const [formState, dispatch] = useReducer(visitFormReducer, visitTemplate);
@@ -123,17 +120,30 @@ function VisitRegisterForm({ apiCalendar }: Props) {
               { method: "popup", minutes: 10 },
             ],
           },
+          conferenceData: {
+            createRequest: {
+              requestId: crypto.randomUUID(),
+              conferenceSolutionKey: {
+                type: "hangoutsMeet",
+              },
+            },
+          },
         };
-        const calendarEventRequest = (apiCalendar as ApiCalendar).createEventWithVideoConference(
-          visitEvent,
-          "primary",
-          "all"
-        );
-        calendarEventRequest.execute((registeredEvent: Partial<VisitEvent>) => {
-          console.log("Event created!");
-          console.log(registeredEvent);
-          navigate("/visit");
-        });
+        // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // // @ts-ignore
+        // const calendarEventRequest = apiCalendar.createEventWithVideoConference(visitEvent, "primary", "all");
+        gapi.client.calendar.events
+          .insert({
+            calendarId: "primary",
+            resource: visitEvent,
+            sendNotifications: true,
+            conferenceDataVersion: 1,
+          })
+          .execute((registeredEvent: Partial<VisitEvent>) => {
+            console.log("Event created!");
+            console.log(registeredEvent);
+            navigate("/");
+          });
       })
       .catch((err) => console.log(err.message));
   };

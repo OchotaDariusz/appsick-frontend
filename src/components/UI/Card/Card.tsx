@@ -11,7 +11,7 @@ function Card({ className, children }: Props) {
 
   return (
     <div className={`card bg-light ${classes}` || ""}>
-      <div className="card-body">{children}</div>
+      <div className="card-body px-0 px-md-3">{children}</div>
     </div>
   );
 }

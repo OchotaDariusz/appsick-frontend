@@ -1,15 +1,7 @@
-import { AuthObject, ConfigApiCalendar, UserDetails, Visit, VisitObject } from "./types";
+import { AuthObject, UserDetails, Visit, VisitObject } from "./types";
 import maleDoctorAv from "../assets/male.svg";
 import femaleDoctorAv from "../assets/female.svg";
 import { userDetailsTemplate } from "../reducers/store";
-
-// config for google calendar
-export const calendarConfig: ConfigApiCalendar = {
-  clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-  apiKey: import.meta.env.VITE_GOOGLE_APP_ID,
-  scope: "https://www.googleapis.com/auth/calendar",
-  discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
-};
 
 // config for firebase
 export const firebaseConfig = {
