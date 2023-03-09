@@ -37,7 +37,6 @@ function AllVisitsPage() {
     setIsTodayVisitsLoading(true);
     getPatientVisitsForToday()
       .then((visitsForToday) => {
-        console.log(visitsForToday);
         const filtered = (visitsForToday as Visit[]).filter(
           (todayVisit) => todayVisit.status === "PENDING" && isToday(todayVisit)
         );

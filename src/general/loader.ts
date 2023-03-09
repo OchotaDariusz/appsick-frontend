@@ -39,4 +39,13 @@ export const visitsLoader = async ({ params }: LoaderFunctionArgs): Promise<Resp
   return new Response(JSON.stringify({ visitId: +(params.visitId as string) }));
 };
 
+export const userLoader = async (): Promise<Response | null> => {
+  const user: string | UserDetails | ErrorMessage = await getUser();
+  if (typeof user === "string" || !("id" in (user as UserDetails))) {
+    return redirect("/");
+  }
+  const patient = await getPatient();
+  return new Response(JSON.stringify(patient));
+};
+
 export default loader;

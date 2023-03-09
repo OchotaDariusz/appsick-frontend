@@ -68,7 +68,6 @@ function VisitRegisterForm() {
   useEffect(() => {
     if ((formState as VisitRegisterRequest).doctorId !== 0) {
       getDoctorById(doctorId as number).then((doctor: DoctorObject | ErrorMessage) => {
-        console.log(doctor);
         setDoctorEmail((doctor as Doctor).user?.email as string);
       });
     }
@@ -109,16 +108,14 @@ function VisitRegisterForm() {
           doctorEmail
         );
         const calendarEventRequest = apiCalendar.createEventWithVideoConference(visitEvent, "primary", "all");
-        calendarEventRequest.execute((registeredEvent: Partial<VisitEvent>) => {
-          console.log("Event created!");
-          console.log(registeredEvent);
+        calendarEventRequest.execute(() => {
           setIsVisitPosting(false);
           navigate("/");
         });
         setIsVisitPosting(false);
       })
       .catch((err) => {
-        console.log(err.message);
+        console.error(err.message);
         setIsVisitPosting(false);
       });
   };

@@ -43,9 +43,7 @@ function RegisterForm() {
       delete registerData.passwordConfirm;
       setIsFormPosting(true);
       postRegisterData(registerData)
-        .then((data) => {
-          console.log("Registered new user");
-          console.log(data);
+        .then(() => {
           closeModal();
           setIsFormPosting(false);
           navigate("/");
@@ -54,8 +52,6 @@ function RegisterForm() {
           console.error(err);
           setIsFormPosting(false);
         });
-    } else {
-      console.log("invalid form");
     }
   };
 

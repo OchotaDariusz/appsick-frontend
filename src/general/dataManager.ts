@@ -169,7 +169,6 @@ export const getPatientVisits = async (time?: string, pageNumber?: number): Prom
     const timeEndpoint = time ?? "";
     const currentPage = `?pageNumber=${pageNumber}` ?? "";
     const patient: PatientObject | ErrorMessage = await getPatient();
-    console.log(patient);
     if ("patientId" in (patient as Patient)) {
       return await (getData(`/visit/patient/${(<Patient>patient).patientId}${timeEndpoint}${currentPage}`) as Promise<
         VisitObject[]

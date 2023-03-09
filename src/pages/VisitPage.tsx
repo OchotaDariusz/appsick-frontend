@@ -45,7 +45,6 @@ function VisitPage() {
 
   const setChatMessages = useCallback(
     (chatMessages: ChatMessageDTO[]) => {
-      console.log("setChatMessages");
       visitStateChangeHandler("chatMessages", chatMessages);
     },
     [visitStateChangeHandler]
@@ -68,7 +67,7 @@ function VisitPage() {
       chatroom
         .addChat(visitState.chatMessage)
         .then(() => (formRef.current as HTMLFormElement).reset())
-        .catch((err) => console.log(err.message));
+        .catch((err) => console.error(err.message));
     },
     [visitState.chatMessage]
   );
@@ -84,7 +83,7 @@ function VisitPage() {
           })
           .catch((err) => console.error(err.message));
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => console.error(err.message));
   }, [authState.role, navigate, setChatMessages, visitId]);
 
   useEffect(() => {
@@ -99,7 +98,6 @@ function VisitPage() {
       visitStateChangeHandler("visitReason", (visit as Visit).reason);
     });
     chatroom = new Chatroom(visitId, authState.id, `${authState.firstName} ${authState.lastName}`);
-    console.log("chat initied");
     updateChat();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

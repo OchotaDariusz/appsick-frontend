@@ -54,7 +54,7 @@ function VisitEndModal({ visitId, endVisit }: Props) {
         closeModal();
         navigate("/");
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => console.error(err.message));
   };
 
   return (

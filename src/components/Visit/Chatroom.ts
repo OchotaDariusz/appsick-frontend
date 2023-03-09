@@ -63,11 +63,10 @@ class Chatroom {
         if (change.type === "added") {
           getDocs(queryResults)
             .then((querySnapshot) => {
-              const messages = [];
+              const messages: DocumentData[] = [];
               querySnapshot.forEach((docSnapshot) => {
                 messages.push(docSnapshot.data());
               });
-              messages.push(change.doc.data());
               updateCallback(messages as ChatMessageDTO[]);
             })
             .catch((err) => console.error(err.message));

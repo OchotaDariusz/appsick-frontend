@@ -36,7 +36,6 @@ function LoginForm() {
     setIsFormPosting(true);
     postLoginData(formState)
       .then(() => {
-        console.log("Logged in");
         getUser().then((userDetails) => {
           const authObject = mapDataToAuthObject(userDetails as UserDetails);
           // set state for patient

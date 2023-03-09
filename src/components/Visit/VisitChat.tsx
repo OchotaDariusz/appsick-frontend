@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { ChatMessage, VisitPageState } from "../../general/types";
 import { useAppSelector } from "../../hooks/useAppDispatch";
 import { selectAuth } from "../../reducers/store";
@@ -35,8 +35,6 @@ function VisitChat({ visitState, sendMessage, visitStateChangeHandler }: Props) 
       return (e: React.FormEvent<HTMLFormElement>) => sendMessage(e, formRef);
     }
   };
-
-  useEffect(() => console.log(visitState), [visitState]);
 
   return (
     <div className="container m-auto">
