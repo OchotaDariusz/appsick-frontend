@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { initializeApp } from "firebase/app";
 import {
   addDoc,
@@ -34,11 +35,14 @@ class Chatroom {
 
   private unsub: (() => void) | undefined;
 
-  constructor(visitId: number, userId: number, author: string) {
+  private endVisitFn: any;
+
+  constructor(visitId: number, userId: number, author: string, endVisitFn: any) {
     this.visitId = visitId;
     this.userId = userId;
     this.author = author;
     this.chatMessages = collection(db, "appsick-visits");
+    this.endVisitFn = endVisitFn;
   }
 
   async addChat(message: string) {
@@ -70,6 +74,8 @@ class Chatroom {
               updateCallback(messages as ChatMessageDTO[]);
             })
             .catch((err) => console.error(err.message));
+        } else if (change.type === "removed") {
+          if (typeof this.endVisitFn === "function") this.endVisitFn(true);
         }
       });
     });

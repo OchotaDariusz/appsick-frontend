@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useCallback, useEffect, useReducer } from "react";
+import React, { useCallback, useEffect, useReducer, useState } from "react";
 import ReactDOM from "react-dom";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { ChatMessageDTO, ErrorMessage, Visit, VisitObject, VisitPageState } from "../general/types";
@@ -35,6 +35,7 @@ function VisitPage() {
   const navigate = useNavigate();
   const isDomReady = useDomReady();
   const { visitId }: { visitId: number } = JSON.parse(useLoaderData() as string);
+  const [isVisitEnded, setIsVisitEnded] = useState(false);
 
   const visitStateChangeHandler = useCallback(
     (field: string, value: any) => {
@@ -86,21 +87,34 @@ function VisitPage() {
       .catch((err) => console.error(err.message));
   }, [authState.role, navigate, setChatMessages, visitId]);
 
+  const setVisitState = (
+    visit: VisitObject | ErrorMessage,
+    doctorFullName: string,
+    doctorAvatar: string,
+    doctorSpeciality: string
+  ) => {
+    visitStateChangeHandler("patientId", authState.patientId);
+    visitStateChangeHandler("patientName", `${authState.firstName} ${authState.lastName}`);
+    visitStateChangeHandler("doctorId", (visit as Visit).doctor?.doctorId);
+    visitStateChangeHandler("doctorName", doctorFullName);
+    visitStateChangeHandler("doctorAvatar", doctorAvatar);
+    visitStateChangeHandler("doctorSpeciality", doctorSpeciality);
+    visitStateChangeHandler("visitReason", (visit as Visit).reason);
+  };
+
   useEffect(() => {
     getVisitById(visitId).then((visit: VisitObject | ErrorMessage) => {
       const [doctorAvatar, doctorFullName, doctorSpeciality] = extractDoctorDataFromVisit(visit as Visit);
-      visitStateChangeHandler("patientId", authState.patientId);
-      visitStateChangeHandler("patientName", `${authState.firstName} ${authState.lastName}`);
-      visitStateChangeHandler("doctorId", (visit as Visit).doctor?.doctorId);
-      visitStateChangeHandler("doctorName", doctorFullName);
-      visitStateChangeHandler("doctorAvatar", doctorAvatar);
-      visitStateChangeHandler("doctorSpeciality", doctorSpeciality);
-      visitStateChangeHandler("visitReason", (visit as Visit).reason);
+      setVisitState(visit, doctorFullName, doctorAvatar, doctorSpeciality);
     });
-    chatroom = new Chatroom(visitId, authState.id, `${authState.firstName} ${authState.lastName}`);
+    chatroom = new Chatroom(visitId, authState.id, `${authState.firstName} ${authState.lastName}`, setIsVisitEnded);
     updateChat();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (isVisitEnded && authState.role === "PATIENT") navigate("/");
+  }, [isVisitEnded, authState.role, navigate]);
 
   const visitEndProps = { visitId, endVisit };
   const visitChatProps = { visitState, sendMessage, visitStateChangeHandler };
