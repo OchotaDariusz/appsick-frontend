@@ -49,3 +49,25 @@ export const userLoader = async (): Promise<Response | null> => {
 };
 
 export default loader;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const stateLoader = async (login: any) => {
+  const user: string | UserDetails | ErrorMessage = await getUser();
+  if (typeof user === "string" || !("id" in (user as UserDetails))) {
+    return;
+  }
+  getPatient()
+    .then((patient) => {
+      const userDetailsTemplate: AuthObject = {
+        id: (user as UserDetails).id,
+        email: (user as UserDetails).email,
+        firstName: (user as UserDetails).firstName,
+        lastName: (user as UserDetails).lastName,
+        role: "PATIENT",
+        patientId: (patient as Patient).patientId,
+        doctorId: null,
+      };
+      login(userDetailsTemplate);
+    })
+    .catch((err) => console.error(err.message));
+};

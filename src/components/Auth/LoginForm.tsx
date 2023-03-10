@@ -10,7 +10,7 @@ import { getPatient, getUser, postLoginData } from "../../general/dataManager";
 import { login } from "../../reducers/store";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 
-const initialLoginFormState: LoginRequest = {
+export const initialLoginFormState: LoginRequest = {
   email: "",
   password: "",
 };

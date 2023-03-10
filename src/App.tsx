@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { Outlet, Routes, Route } from "react-router-dom";
 import useDomReady from "./hooks/useDomReady";
@@ -6,6 +6,10 @@ import Card from "./components/UI/Card/Card";
 import AuthModal from "./components/Auth/AuthModal";
 import Navbar from "./components/UI/Navbar/Navbar";
 import MainBody from "./components/MainBody";
+import { stateLoader } from "./general/loader";
+import { useAppDispatch } from "./hooks/useAppDispatch";
+import { login } from "./reducers/store";
+import { AuthObject } from "./general/types";
 
 function Video() {
   return (
@@ -28,6 +32,16 @@ function Video() {
 
 function App() {
   const isDomReady = useDomReady();
+  const authDispatch = useAppDispatch();
+
+  const dispatchLogin = (authObject: AuthObject) => {
+    authDispatch(login(authObject));
+  };
+
+  useEffect(() => {
+    stateLoader(dispatchLogin);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  });
 
   return (
     <>
