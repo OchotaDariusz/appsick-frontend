@@ -1,25 +1,30 @@
-# AppSick Frontend
+# AppSick Frontend v2
 
 ## Vite + React + TypeScript + Sass + Bootstrap
 
 [![AppSick Frontend CI](https://github.com/OchotaDariusz/appsick-frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/OchotaDariusz/appsick-frontend/actions/workflows/ci.yml)
 
-### Backend
-
-https://github.com/OchotaDariusz/appsick
-
-<hr />
 <br />
 
-#### Old Frontend
+### Demo:
+# [Visit site](https://v2.appsick.eu.org)
 
-https://github.com/OchotaDariusz/appsick-react
-
-<hr />
+<br />
 <br />
 
-# Demo
+## Backend ( Java / Spring / Hibernate / PostgreSQL )
 
-https://appsick.eu.org/
+`source: https://github.com/OchotaDariusz/appsick`
+
+<br />
+
+## Frontend v1 ( Webpack / React / Bootstrap / Chakra )
+
+`Demo:` https://appsick.eu.org <br />
+`source: https://github.com/OchotaDariusz/appsick-react`
+
+<br />
+
+### Presentation
 
 [![APPSICK DEMO](https://img.youtube.com/vi/lisbaJT8LfU/0.jpg)](https://www.youtube.com/watch?v=lisbaJT8LfU)
