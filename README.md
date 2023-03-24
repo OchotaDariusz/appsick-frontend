@@ -7,6 +7,11 @@
 <br />
 
 ### Demo:
+
+Example patient account -
+Login: `aaa@aaa`
+Password: `aaa@aaa`
+
 # [Visit site](https://v2.appsick.eu.org)
 
 <br />
